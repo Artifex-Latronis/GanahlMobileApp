@@ -21,10 +21,10 @@
     </mat-card-content>
   </mat-card>
 </section>
-<section class="unit-actions" fxLayout="column" fxLayoutGap="50px">
+<section *ngIf="!onPullingUnit && !onMovingUnit" class="unit-actions" fxLayout="column" fxLayoutGap="50px">
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button mat-raised-button color="accent" (click)="onPullUnit()">Pull</button>
-    <button mat-raised-button color="accent" (click)="onMoveUnit()">Move</button>
+    <button mat-raised-button color="accent" (click)="onPullUnit()" (click)="onPullingUnit = true">Pull</button>
+    <button mat-raised-button color="accent" (click)="onMoveUnit()" (click)="onMovingUnit = true">Move</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
     <button mat-raised-button color="accent" (click)="onTransferUnit('West Yard')">West Yard</button>
@@ -33,4 +33,10 @@
   <div class="button-row" fxLayout="row" fxLayoutAlign="center">
     <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
   </div>
+</section>
+<section *ngIf="onPullingUnit" class="pull-unit">
+  <app-unit-pull></app-unit-pull>
+</section>
+<section *ngIf="onMovingUnit" class="move-unit">
+  <app-unit-move></app-unit-move>
 </section>
