@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UnitService } from './unit.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { Unit } from './unit.model';
 
 @Component({
   selector: 'app-unit',
@@ -9,6 +10,7 @@ import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.
   styleUrls: ['./unit.component.css']
 })
 export class UnitComponent implements OnInit {
+  unit: Unit = new Unit('BB999', 'A01', '112204.08', 500, 8, 'Length', '2 x 4', 'STD & BTR DF S4S');
 
   constructor (
     private unitService: UnitService,
@@ -26,13 +28,19 @@ export class UnitComponent implements OnInit {
 
   }
 
-  onTransferUnit() {
-    const location = 'WYARD';
-    this.dialog.open(ConfirmDialogComponent, {
+  onTransferUnit(location) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        location: location
+        message: 'Transfer Unit to: ' + location
       }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.unitService.updateUnit(location);
+      }
+    });
+
   }
 
   onCancel() {

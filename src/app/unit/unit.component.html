@@ -1,22 +1,22 @@
 <section class="unit-card">
   <mat-card>
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
-      <div class="card-title">Unit#: BB999</div>
-      <div class="card-title">Area: A01</div>
+      <div class="card-title">Unit#: {{ unit.ID }}</div>
+      <div class="card-title">Area: {{ unit.binID }} </div>
     </mat-card-title>
     <hr>
     <mat-card-content fxLayout="column" fxLayoutGap="10px">
       <div fxLayout="row" fxLayoutAlign="space-between">
-        <div class="card-content">Product: 112204.08</div>
-        <div class="card-content">Quantity: 500</div>
+        <div class="card-content">Product: {{ unit.productID }}</div>
+        <div class="card-content">Quantity: {{ unit.quantity }}</div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between">
-        <div class="card-content">Size: 2 x 4</div>
-        <div class="card-content">Length: 8 Foot</div>
+        <div class="card-content">Size: {{ unit.size }}</div>
+        <div *ngIf="unit.lengthType" class="card-content">{{ unit.lengthType }}: {{ unit.length }} Foot</div>
       </div>
       <div fxLayout="row" fxLayoutAlign="space-between">
         <div class="card-content">Description:</div>
-        <div class="card-content">STD & BTR DF S4S</div>
+        <div class="card-content">{{ unit.description }}</div>
       </div>
     </mat-card-content>
   </mat-card>
@@ -27,8 +27,8 @@
     <button mat-raised-button color="accent" (click)="onMoveUnit()">Move</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button class="button-test" mat-raised-button color="accent" (click)="onTransferUnit()">Xfr to W-Yard</button>
-    <button mat-raised-button color="accent" (click)="onTransferUnit()">Xfr to B-Shed</button>
+    <button mat-raised-button color="accent" (click)="onTransferUnit('West Yard')">West Yard</button>
+    <button mat-raised-button color="accent" (click)="onTransferUnit('B Shed')">B Shed</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="center">
     <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
