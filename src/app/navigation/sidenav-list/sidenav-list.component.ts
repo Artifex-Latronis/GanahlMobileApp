@@ -13,11 +13,16 @@ export class SidenavListComponent implements OnInit {
   ngOnInit() {
   }
 
-  onClose() {
+  onUnit() {
     this.closeSidenav.emit();
   }
 
   onLogout() {
     this.onClose();
+  }
+
+
+  onClose() {
+    this.closeSidenav.emit();
   }
 }
