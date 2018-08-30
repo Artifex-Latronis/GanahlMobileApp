@@ -23,12 +23,12 @@
 </section>
 <section class="unit-actions" fxLayout="column" fxLayoutGap="50px">
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button mat-raised-button color="primary" (click)="onPullUnit()">Pull</button>
-    <button mat-raised-button color="primary" (click)="onMoveUnit()">Move</button>
+    <button mat-raised-button color="accent" (click)="onPullUnit()">Pull</button>
+    <button mat-raised-button color="accent" (click)="onMoveUnit()">Move</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button class="button-test" mat-raised-button color="accent" (click)="onTransferUnit(WYARD)">Xfr to W-Yard</button>
-    <button mat-raised-button color="accent" (click)="onTransferUnit(BSHED)">Xfr to B-Shed</button>
+    <button class="button-test" mat-raised-button color="accent" (click)="onTransferUnit()">Xfr to W-Yard</button>
+    <button mat-raised-button color="accent" (click)="onTransferUnit()">Xfr to B-Shed</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="center">
     <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>

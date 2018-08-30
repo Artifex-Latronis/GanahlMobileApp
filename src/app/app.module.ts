@@ -8,13 +8,15 @@ import { MaterialModule } from './material.module';
 import { HeaderComponent } from './navigation/header/header.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UnitComponent } from './unit/unit.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidenavListComponent,
-    UnitComponent
+    UnitComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -23,6 +25,7 @@ import { UnitComponent } from './unit/unit.component';
     FlexLayoutModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule { }
