@@ -1,0 +1,21 @@
+.unit-card {
+  padding: 20px
+}
+
+.card-title {
+  font-size: 100%;
+}
+
+.card-content {
+  font-size: 150%;
+}
+
+.unit-actions {
+  padding: 30px;
+}
+
+.button-row button {
+  width: 45%;
+  height: 50px;
+  font-size: 150%
+}
