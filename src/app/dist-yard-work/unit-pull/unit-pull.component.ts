@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-unit-pull',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnitPullComponent implements OnInit {
 
-  constructor() { }
+  @Output() pullingUnitEnd = new EventEmitter<void>();
+
+  constructor () { }
 
   ngOnInit() {
   }
 
+  onCancel() {
+    this.pullingUnitEnd.emit();
+  }
 }

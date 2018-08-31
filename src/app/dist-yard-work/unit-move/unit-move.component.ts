@@ -6,11 +6,14 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./unit-move.component.css']
 })
 export class UnitMoveComponent implements OnInit {
-  movingUnit;
+  @Output() movingUnitEnd = new EventEmitter<void>();
 
   constructor () { }
 
   ngOnInit() {
   }
 
+  onCancel() {
+    this.movingUnitEnd.emit();
+  }
 }

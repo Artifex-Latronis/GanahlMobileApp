@@ -5,32 +5,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HeaderComponent } from './navigation/header/header.component';
-import { UnitComponent } from './unit-actions/unit/unit.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
-import { UnitService } from './unit-actions/unit.service';
-import { UnitActivityService } from './unit-actions/unit-activity.service';
+import { UnitService } from './dist-yard-work/unit.service';
+import { UnitActivityService } from './dist-yard-work/unit-activity.service';
 import { AuthService } from './auth/auth.service';
 import { UiService } from './shared/ui.service';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './app.reducer';
 import { AppRoutingModule } from './/app-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { UnitPullComponent } from './unit-actions/unit-pull/unit-pull.component';
-import { UnitMoveComponent } from './unit-actions/unit-move/unit-move.component';
-import { UnitActionsComponent } from './unit-actions/unit-actions.component';
+import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidenavListComponent,
-    UnitComponent,
-    ConfirmDialogComponent,
-    UnitPullComponent,
-    UnitMoveComponent,
-    UnitActionsComponent
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +32,7 @@ import { UnitActionsComponent } from './unit-actions/unit-actions.component';
     HttpClientModule,
     AuthModule,
     StoreModule.forRoot({ ui: appReducer }),
+    DistYardWorkModule,
     AppRoutingModule
   ],
   providers: [AuthService, UiService, UnitService, UnitActivityService],

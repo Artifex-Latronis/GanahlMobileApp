@@ -1,0 +1,9 @@
+.unit-move-actions {
+  padding: 30px
+}
+
+.button-row button {
+  width: 45%;
+  height: 50px;
+  font-size: 150%
+}

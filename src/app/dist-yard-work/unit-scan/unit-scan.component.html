@@ -1,0 +1,37 @@
+<section *ngIf="!onScanningUnit">
+  <br>
+  <br>
+  <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="unitScanForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Scan Unit Tag" formControlName="unitID">
+      <mat-error>Missing Unit Number</mat-error>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
+  </form>
+</section>
+
+
+
+<section *ngIf="onScanningUnit" class="unit-card">
+  <mat-card>
+    <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
+      <div class="card-title">Unit#: {{ unit.ID }}</div>
+      <div class="card-title">Area: {{ unit.binID }} </div>
+    </mat-card-title>
+    <hr>
+    <mat-card-content fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div class="card-content">Product: {{ unit.productID }}</div>
+        <div class="card-content">Quantity: {{ unit.quantity }}</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div class="card-content">Size: {{ unit.size }}</div>
+        <div *ngIf="unit.lengthType" class="card-content">{{ unit.lengthType }}: {{ unit.length }} Foot</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div class="card-content">Description:</div>
+        <div class="card-content">{{ unit.description }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</section>
