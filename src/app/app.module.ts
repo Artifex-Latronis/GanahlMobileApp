@@ -28,12 +28,12 @@ import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    SharedModule,
     HttpClientModule,
-    AuthModule,
     StoreModule.forRoot({ ui: appReducer }),
-    DistYardWorkModule,
-    AppRoutingModule
+    SharedModule,
+    AppRoutingModule,
+    AuthModule,
+    DistYardWorkModule
   ],
   providers: [AuthService, UiService, UnitService, UnitActivityService],
   bootstrap: [AppComponent],
