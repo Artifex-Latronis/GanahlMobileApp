@@ -1,7 +1,8 @@
 <section *ngIf="!onScanningUnit">
   <br>
   <br>
-  <form fxLayout="column" fxLayoutAlign="center center" [formGroup]="unitScanForm" (ngSubmit)="onSubmit()">
+  <form class="unit-scan-button" fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" [formGroup]="unitScanForm"
+    (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Scan Unit Tag" formControlName="unitID">
       <mat-error>Missing Unit Number</mat-error>
@@ -9,9 +10,6 @@
     <button type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
   </form>
 </section>
-
-
-
 <section *ngIf="onScanningUnit" class="unit-card">
   <mat-card>
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between">

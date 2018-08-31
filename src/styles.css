@@ -6,8 +6,14 @@ html,
 body {
   font-family: 'Roboto', sans-serif;
   height: 100%;
+  font-size: 125%
 }
 
-body {
-  margin: 0;
+html,
+input {
+  font-size: 125%
+}
+
+.button-row button {
+  font-size: 100%;
 }

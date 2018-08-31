@@ -29,7 +29,10 @@ export class UnitScanComponent implements OnInit {
   onSubmit() {
     this.unitService.getUnit()
       .subscribe(
-        (response) => console.log(response),
+        (response) => {
+          console.log(response);
+
+        },
         (error) => console.log(error)
       );
     this.onScanningUnit = true;

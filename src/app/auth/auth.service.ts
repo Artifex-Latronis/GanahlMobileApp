@@ -13,5 +13,6 @@ export class AuthService {
 
   login() {
     this.store.dispatch({ type: 'START_LOADING' });
+
   }
 }

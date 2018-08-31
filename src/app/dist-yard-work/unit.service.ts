@@ -29,6 +29,10 @@ export class UnitService {
 
   }
 
+  pullUnit(orderID) {
+    console.log('pulling unit for order: ' + orderID);
+  }
+
   updateUnit(location) {
     console.log('updating unit to:' + location);
   }

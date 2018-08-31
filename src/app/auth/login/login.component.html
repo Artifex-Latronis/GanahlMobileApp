@@ -1,7 +1,8 @@
 <section>
   <br>
   <br>
-  <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form class="login-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Employee Number" formControlName="user">
       <mat-error>Missing Employee Number</mat-error>

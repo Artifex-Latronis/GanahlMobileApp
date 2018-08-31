@@ -1,9 +1,13 @@
-.unit-pull-actions {
-  padding: 30px
+.unit-pull-actions button {
+  width: 200px;
+  height: 50px;
+  font-size: 100%
 }
 
-.button-row button {
-  width: 45%;
-  height: 50px;
-  font-size: 150%
+.form {
+  width: 440px;
+}
+
+mat-form-field {
+  width: 400px
 }

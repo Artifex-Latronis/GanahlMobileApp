@@ -9,3 +9,17 @@
 .card-content {
   font-size: 150%;
 }
+
+.unit-scan-button button {
+  width: 200px;
+  height: 50px;
+  font-size: 100%
+}
+
+mat-form-field {
+  width: 400px
+}
+
+input {
+  font-size: 200%
+}

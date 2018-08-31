@@ -3,7 +3,7 @@ export interface State {
   isLoading: boolean;
 }
 
-const initialState = {
+const initialState: State = {
   isLoading: false
 };
 

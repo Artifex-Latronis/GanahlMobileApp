@@ -1,5 +1,14 @@
-<section class="unit-pull-actions" fxLayout="column" fxLayoutGap="50px">
-  <div class="button-row" fxLayout="row" fxLayoutAlign="center">
-    <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
-  </div>
+<section>
+  <br>
+  <form class="unit-pull-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="orderScanForm"
+    (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Scan Sales/Transfer Order Number" formControlName="orderID">
+      <mat-error>Missing Sales/Transfer Number</mat-error>
+    </mat-form-field>
+    <div class="unit-pull-actions" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
+      <button type="submit" mat-raised-button color="primary" [disabled]="orderScanForm.invalid">Submit</button>
+      <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
 </section>

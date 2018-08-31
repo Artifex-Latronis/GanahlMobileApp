@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { UnitService } from '../unit.service';
 
 @Component({
   selector: 'app-unit-pull',
@@ -7,11 +9,23 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class UnitPullComponent implements OnInit {
 
+  orderScanForm: FormGroup;
+
   @Output() pullingUnitEnd = new EventEmitter<void>();
 
-  constructor () { }
+  constructor (
+    private unitService: UnitService
+  ) { }
 
   ngOnInit() {
+    this.orderScanForm = new FormGroup({
+      orderID: new FormControl('', { validators: [Validators.required] })
+    });
+  }
+
+  onSubmit() {
+    this.unitService.pullUnit(this.orderScanForm.value.orderID);
+    this.pullingUnitEnd.emit();
   }
 
   onCancel() {
