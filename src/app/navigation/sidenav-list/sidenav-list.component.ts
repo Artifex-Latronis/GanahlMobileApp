@@ -9,7 +9,10 @@ import { User } from '../../auth/user.model';
   styleUrls: ['./sidenav-list.component.css']
 })
 export class SidenavListComponent implements OnInit, OnDestroy {
+
   @Output() closeSidenav = new EventEmitter<void>();
+  @Output() scanningUnitEnd = new EventEmitter<void>();
+
   isAuth: boolean;
   authSubscription: Subscription;
   user: User;
@@ -25,7 +28,8 @@ export class SidenavListComponent implements OnInit, OnDestroy {
   }
 
   onYard() {
-    this.closeSidenav.emit();
+    this.onClose();
+    this.scanningUnitEnd.emit();
   }
 
   onLogout() {

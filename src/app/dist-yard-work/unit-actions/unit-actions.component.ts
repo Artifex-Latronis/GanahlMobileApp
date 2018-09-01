@@ -40,6 +40,7 @@ export class UnitActionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.unitService.updateUnit(location);
+        this.scanningUnitEnd.emit();
       }
     });
 

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DistYardWorkComponent implements OnInit {
 
-  // onScanningUnit = false;
+  onUnitScan = true;
   onPullingUnit = false;
   onMovingUnit = false;
 
