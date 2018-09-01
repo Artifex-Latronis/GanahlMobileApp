@@ -1,9 +1,9 @@
 <mat-nav-list>
-  <a routerLink="/yard" mat-list-item (click)="onUnit()">
+  <a *ngIf="isAuth" routerLink="/yard" mat-list-item (click)="onYard()">
     <mat-icon>assignment</mat-icon>
     <span class="nav-caption">Order Pulling</span>
   </a>
-  <a routerLink="/login" mat-list-item (click)="onLogout()">
+  <a *ngIf="isAuth" mat-list-item (click)="onLogout()">
     <mat-icon>eject</mat-icon>
     <span class="nav-caption">Logout</span>
   </a>

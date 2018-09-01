@@ -25,14 +25,20 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.loginForm = new FormGroup({
-      user: new FormControl('', { validators: [Validators.required] }),
+      userID: new FormControl('', { validators: [Validators.required] }),
       password: new FormControl('', { validators: [Validators.required] })
     });
   }
 
   onSubmit() {
+    this.authService.login({
+      userID: this.loginForm.value.userID,
+      password: this.loginForm.value.password
+    });
+
     // console.log(this.loginForm.value.user);
     // console.log(this.loginForm.value.password);
+
   }
 
 }

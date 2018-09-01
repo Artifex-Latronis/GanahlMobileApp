@@ -12,6 +12,7 @@ export class UnitActionsComponent implements OnInit {
 
   @Output() pullingUnitStart = new EventEmitter<void>();
   @Output() movingUnitStart = new EventEmitter<void>();
+  @Output() scanningUnitEnd = new EventEmitter<void>();
 
   constructor (
     private unitService: UnitService,
@@ -45,6 +46,6 @@ export class UnitActionsComponent implements OnInit {
   }
 
   onCancel() {
-
+    this.scanningUnitEnd.emit();
   }
 }

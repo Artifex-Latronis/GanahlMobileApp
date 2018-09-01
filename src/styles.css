@@ -6,7 +6,8 @@ html,
 body {
   font-family: 'Roboto', sans-serif;
   height: 100%;
-  font-size: 125%
+  font-size: 125%;
+  margin: 0
 }
 
 html,
