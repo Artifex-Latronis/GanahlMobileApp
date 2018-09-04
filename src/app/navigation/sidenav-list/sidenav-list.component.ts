@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/cor
 import { AuthService } from '../../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../../auth/user.model';
+import { UnitService } from '../../dist-yard-work/unit.service';
 
 @Component({
   selector: 'app-sidenav-list',
@@ -18,7 +19,8 @@ export class SidenavListComponent implements OnInit, OnDestroy {
   user: User;
 
   constructor (
-    private authService: AuthService
+    private authService: AuthService,
+    private unitService: UnitService
   ) { }
 
   ngOnInit() {
@@ -29,7 +31,7 @@ export class SidenavListComponent implements OnInit, OnDestroy {
 
   onYard() {
     this.onClose();
-    this.scanningUnitEnd.emit();
+    this.unitService.stopAllUnitActions();
   }
 
   onLogout() {

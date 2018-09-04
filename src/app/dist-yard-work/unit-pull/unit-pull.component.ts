@@ -11,9 +11,6 @@ export class UnitPullComponent implements OnInit {
 
   orderScanForm: FormGroup;
 
-  @Output() pullingUnitEnd = new EventEmitter<void>();
-  @Output() scanningUnitEnd = new EventEmitter<void>();
-
   constructor (
     private unitService: UnitService
   ) { }
@@ -26,16 +23,9 @@ export class UnitPullComponent implements OnInit {
 
   onSubmit() {
     this.unitService.completePullingUnit(this.orderScanForm.value.orderID);
-
-    // this.unitService.pullUnit(this.orderScanForm.value.orderID);
-    // this.unitService.stopPullingUnit();
-    // this.unitService.stopScanUnit();
-    // this.pullingUnitEnd.emit();
-    // this.scanningUnitEnd.emit();
   }
 
   onCancel() {
     this.unitService.cancelPullingUnit();
-    // this.pullingUnitEnd.emit();
   }
 }

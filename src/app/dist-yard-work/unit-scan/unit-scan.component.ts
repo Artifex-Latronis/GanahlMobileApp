@@ -25,17 +25,6 @@ export class UnitScanComponent implements OnInit {
 
   onSubmit() {
     this.unitService.startScanUnit(this.unitScanForm.value.unitID);
-    // this.scanningUnitStart.emit();
-
-    // this.unitService.getUnit(this.unitScanForm.value.unitID)
-    //   .subscribe(
-    //     (response) => {
-    //       console.log(response);
-
-    //     },
-    //     (error) => console.log(error)
-    //   );
-    // this.scanningUnitStart.emit();
   }
 
 }

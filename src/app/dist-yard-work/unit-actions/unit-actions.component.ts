@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UnitService } from '../unit.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
@@ -8,11 +8,8 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
   templateUrl: './unit-actions.component.html',
   styleUrls: ['./unit-actions.component.css']
 })
-export class UnitActionsComponent implements OnInit {
 
-  // @Output() pullingUnitStart = new EventEmitter<void>();
-  // @Output() movingUnitStart = new EventEmitter<void>();
-  // @Output() scanningUnitEnd = new EventEmitter<void>();
+export class UnitActionsComponent implements OnInit {
 
   constructor (
     private unitService: UnitService,
@@ -40,8 +37,6 @@ export class UnitActionsComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.unitService.transferUnit(location);
-        this.unitService.stopScanUnit();
-        // this.scanningUnitEnd.emit();
       }
     });
 
@@ -49,7 +44,6 @@ export class UnitActionsComponent implements OnInit {
 
   onCancel() {
     this.unitService.stopScanUnit();
-    // this.unitService.startScanUnit(null);
-    // this.scanningUnitEnd.emit();
   }
+
 }

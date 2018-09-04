@@ -36,8 +36,8 @@ export class DistYardWorkComponent implements OnInit {
     );
 
     this.unitPullSubscription = this.unitService.unitPulling.subscribe(
-      ex => {
-        if (ex) {
+      started => {
+        if (started) {
           this.onPullingUnit = true;
         } else {
           this.onPullingUnit = false;
@@ -46,8 +46,8 @@ export class DistYardWorkComponent implements OnInit {
     );
 
     this.unitMoveSubscription = this.unitService.unitMoving.subscribe(
-      ex => {
-        if (ex) {
+      started => {
+        if (started) {
           this.onMovingUnit = true;
         } else {
           this.onMovingUnit = false;

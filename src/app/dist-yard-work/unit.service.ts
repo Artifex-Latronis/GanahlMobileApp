@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Unit } from './unit.model';
 
 @Injectable({
@@ -11,12 +11,10 @@ export class UnitService {
   unitSelected = new Subject<Unit>();
   unitPulling = new Subject<boolean>();
   unitMoving = new Subject<boolean>();
-  // unitTransferring = new Subject<boolean>();
 
   private selectedUnit: Unit;
   private pullingUnit = false;
   private movingUnit = false;
-  // private transferringUnit = false;
 
   unit: Unit = {
     ID: 'A7995',
@@ -86,16 +84,20 @@ export class UnitService {
     this.unitMoving.next(this.movingUnit);
   }
 
+  // routine for bailing out via navigation menu
+  stopAllUnitActions() {
+    this.stopScanUnit();
+    this.cancelMovingUnit();
+    this.cancelPullingUnit();
+  }
+
   // routines for transferring
   transferUnit(location) {
     console.log('transferring Unit to ' + location);
+    this.stopScanUnit();
   }
 
-  // startTransferringUnit() {
-  //   this.transferringUnit = true;
-  //   this.unitTransferring.next(this.transferringUnit);
-  // }
-
+  // routines for getting unit information
   getSelectedUnit() {
     return { ...this.selectedUnit };
   }
