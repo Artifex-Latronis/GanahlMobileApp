@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Unit } from '../unit.model';
+import { UnitService } from '../unit.service';
 
 @Component({
   selector: 'app-unit-display',
@@ -7,11 +8,17 @@ import { Unit } from '../unit.model';
   styleUrls: ['./unit-display.component.css']
 })
 export class UnitDisplayComponent implements OnInit {
-  unit: Unit = new Unit('BB999', 'A01', '112204.08', 500, 8, 'Length', '2 x 4', 'STD & BTR DF S4S');
 
-  constructor () { }
+  unit: Unit;
+
+  constructor (
+    private unitService: UnitService
+  ) { }
 
   ngOnInit() {
+    this.unit = this.unitService.unit;
+
+
   }
 
 }

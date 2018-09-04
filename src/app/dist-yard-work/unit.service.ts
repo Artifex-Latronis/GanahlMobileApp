@@ -1,21 +1,47 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { Unit } from './unit.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitService {
 
+  unitSelected = new Subject<Unit>();
+
+  private selectedUnit: Unit;
+
+  unit: Unit = {
+    ID: 'A7995',
+    binID: 'A01',
+    productID: '112204.08',
+    quantity: 180,
+    length: 8,
+    lengthType: 'Length',
+    size: '2 x 4',
+    description: 'STD & BTR DF S4S'
+  };
+
   constructor (
     private httpClient: HttpClient
   ) { }
 
-  getUnit() {
+  startScanUnit(unitID: string) {
+    this.selectedUnit = this.getUnitTest(unitID);
+    this.unitSelected.next({ ...this.selectedUnit });
+  }
+
+  getUnitTest(unitID) {
+    return this.unit;
+  }
+
+  getUnit(unitID) {
     console.log('here we gooo');
 
     return this.httpClient.get(
-      'https://myaccount.ganahl.com/api/dev/l/request/unit/92872', {
+      // 'https://myaccount.ganahl.com/api/dev/l/request/unit/92872'
+      'https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID, {
         headers: new HttpHeaders()
         // .append('x-mvconnect', '1884')
         // .append(
@@ -25,8 +51,6 @@ export class UnitService {
         // )
         // .append('x-consumer-username', 'rr')
       });
-
-
   }
 
   pullUnit(orderID) {

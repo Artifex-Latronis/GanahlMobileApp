@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { UnitService } from './unit.service';
 
 @Component({
   selector: 'app-dist-yard-work',
@@ -11,9 +13,21 @@ export class DistYardWorkComponent implements OnInit {
   onPullingUnit = false;
   onMovingUnit = false;
 
-  constructor () { }
+  unitSubscription: Subscription;
+
+  constructor (
+    private unitService: UnitService
+  ) { }
 
   ngOnInit() {
+    this.unitSubscription = this.unitService.unitSelected.subscribe(
+      unit => {
+        if (unit) {
+          this.onUnitScan = true;
+        } else {
+          this.onUnitScan = false;
+        }
+      }
+    );
   }
-
 }
