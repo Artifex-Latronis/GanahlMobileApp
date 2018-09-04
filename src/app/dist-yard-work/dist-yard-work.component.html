@@ -1,16 +1,8 @@
 <app-unit-scan *ngIf="!onUnitScan"></app-unit-scan>
 <app-unit-display *ngIf="onUnitScan"></app-unit-display>
-<app-unit-actions *ngIf="!onPullingUnit && !onMovingUnit && onUnitScan" (pullingUnitStart)="onPullingUnit = true"
-  (movingUnitStart)="onMovingUnit = true" (scanningUnitEnd)="onUnitScan = false"></app-unit-actions>
-<app-unit-pull *ngIf="onPullingUnit" (pullingUnitEnd)="onPullingUnit = false" (scanningUnitEnd)="onUnitScan = false"></app-unit-pull>
-<app-unit-move *ngIf="onMovingUnit" (movingUnitEnd)="onMovingUnit = false" (scanningUnitEnd)="onUnitScan = false"></app-unit-move>
-
-
-
-
-
-
-
+<app-unit-actions *ngIf="!onPullingUnit && !onMovingUnit && onUnitScan"></app-unit-actions>
+<app-unit-pull *ngIf="onPullingUnit"></app-unit-pull>
+<app-unit-move *ngIf="onMovingUnit"></app-unit-move>
 
 
 

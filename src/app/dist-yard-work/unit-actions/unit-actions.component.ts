@@ -10,9 +10,9 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 })
 export class UnitActionsComponent implements OnInit {
 
-  @Output() pullingUnitStart = new EventEmitter<void>();
-  @Output() movingUnitStart = new EventEmitter<void>();
-  @Output() scanningUnitEnd = new EventEmitter<void>();
+  // @Output() pullingUnitStart = new EventEmitter<void>();
+  // @Output() movingUnitStart = new EventEmitter<void>();
+  // @Output() scanningUnitEnd = new EventEmitter<void>();
 
   constructor (
     private unitService: UnitService,
@@ -23,11 +23,11 @@ export class UnitActionsComponent implements OnInit {
   }
 
   onPullUnit() {
-    this.pullingUnitStart.emit();
+    this.unitService.startPullingUnit();
   }
 
   onMoveUnit() {
-    this.movingUnitStart.emit();
+    this.unitService.startMovingUnit();
   }
 
   onTransferUnit(location) {
@@ -39,14 +39,17 @@ export class UnitActionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.unitService.updateUnit(location);
-        this.scanningUnitEnd.emit();
+        this.unitService.transferUnit(location);
+        this.unitService.stopScanUnit();
+        // this.scanningUnitEnd.emit();
       }
     });
 
   }
 
   onCancel() {
-    this.scanningUnitEnd.emit();
+    this.unitService.stopScanUnit();
+    // this.unitService.startScanUnit(null);
+    // this.scanningUnitEnd.emit();
   }
 }

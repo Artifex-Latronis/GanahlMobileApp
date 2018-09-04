@@ -25,12 +25,11 @@ export class UnitMoveComponent implements OnInit {
   }
 
   onSubmit() {
-    this.unitService.moveUnit(this.moveUnitForm.value.binID);
-    this.movingUnitEnd.emit();
-    this.scanningUnitEnd.emit();
+    this.unitService.completeMovingUnit(this.moveUnitForm.value.binID);
   }
 
   onCancel() {
-    this.movingUnitEnd.emit();
+    this.unitService.cancelMovingUnit();
   }
+
 }

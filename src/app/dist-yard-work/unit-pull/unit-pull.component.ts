@@ -25,12 +25,17 @@ export class UnitPullComponent implements OnInit {
   }
 
   onSubmit() {
-    this.unitService.pullUnit(this.orderScanForm.value.orderID);
-    this.pullingUnitEnd.emit();
-    this.scanningUnitEnd.emit();
+    this.unitService.completePullingUnit(this.orderScanForm.value.orderID);
+
+    // this.unitService.pullUnit(this.orderScanForm.value.orderID);
+    // this.unitService.stopPullingUnit();
+    // this.unitService.stopScanUnit();
+    // this.pullingUnitEnd.emit();
+    // this.scanningUnitEnd.emit();
   }
 
   onCancel() {
-    this.pullingUnitEnd.emit();
+    this.unitService.cancelPullingUnit();
+    // this.pullingUnitEnd.emit();
   }
 }

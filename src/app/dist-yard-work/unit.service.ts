@@ -9,8 +9,14 @@ import { Unit } from './unit.model';
 export class UnitService {
 
   unitSelected = new Subject<Unit>();
+  unitPulling = new Subject<boolean>();
+  unitMoving = new Subject<boolean>();
+  // unitTransferring = new Subject<boolean>();
 
   private selectedUnit: Unit;
+  private pullingUnit = false;
+  private movingUnit = false;
+  // private transferringUnit = false;
 
   unit: Unit = {
     ID: 'A7995',
@@ -27,12 +33,74 @@ export class UnitService {
     private httpClient: HttpClient
   ) { }
 
+  // routines for scanning
   startScanUnit(unitID: string) {
-    this.selectedUnit = this.getUnitTest(unitID);
+    this.selectedUnit = this.getUnitTest();
     this.unitSelected.next({ ...this.selectedUnit });
   }
 
-  getUnitTest(unitID) {
+  stopScanUnit() {
+    this.selectedUnit = null;
+    this.unitSelected.next(null);
+  }
+
+  // routines for pulling
+  startPullingUnit() {
+    this.pullingUnit = true;
+    this.unitPulling.next(this.pullingUnit);
+  }
+
+  completePullingUnit(orderID) {
+    console.log('completed pull for order: ' + orderID);
+    this.stopPullingUnit();
+    this.stopScanUnit();
+  }
+
+  cancelPullingUnit() {
+    this.stopPullingUnit();
+  }
+
+  stopPullingUnit() {
+    this.pullingUnit = false;
+    this.unitPulling.next(this.pullingUnit);
+  }
+
+  // routines for moving
+  startMovingUnit() {
+    this.movingUnit = true;
+    this.unitMoving.next(this.movingUnit);
+  }
+
+  completeMovingUnit(binID) {
+    console.log('completed move to bin: ' + binID);
+    this.stopMovingUnit();
+    this.stopScanUnit();
+  }
+
+  cancelMovingUnit() {
+    this.stopMovingUnit();
+  }
+
+  stopMovingUnit() {
+    this.movingUnit = false;
+    this.unitMoving.next(this.movingUnit);
+  }
+
+  // routines for transferring
+  transferUnit(location) {
+    console.log('transferring Unit to ' + location);
+  }
+
+  // startTransferringUnit() {
+  //   this.transferringUnit = true;
+  //   this.unitTransferring.next(this.transferringUnit);
+  // }
+
+  getSelectedUnit() {
+    return { ...this.selectedUnit };
+  }
+
+  getUnitTest() {
     return this.unit;
   }
 
@@ -53,17 +121,6 @@ export class UnitService {
       });
   }
 
-  pullUnit(orderID) {
-    console.log('pulling unit for order: ' + orderID);
-  }
-
-  moveUnit(binID) {
-    console.log('moving unit to: ' + binID);
-  }
-
-  updateUnit(location) {
-    console.log('updating unit to:' + location);
-  }
 }
 
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UnitService } from './unit.service';
+import { UnitActivityService } from './unit-activity.service';
 
 @Component({
   selector: 'app-dist-yard-work',
@@ -13,14 +14,18 @@ export class DistYardWorkComponent implements OnInit {
   onPullingUnit = false;
   onMovingUnit = false;
 
-  unitSubscription: Subscription;
+  unitScanSubscription: Subscription;
+  unitPullSubscription: Subscription;
+  unitMoveSubscription: Subscription;
 
   constructor (
-    private unitService: UnitService
+    private unitService: UnitService,
+    private unitActivityService: UnitActivityService
   ) { }
 
   ngOnInit() {
-    this.unitSubscription = this.unitService.unitSelected.subscribe(
+
+    this.unitScanSubscription = this.unitService.unitSelected.subscribe(
       unit => {
         if (unit) {
           this.onUnitScan = true;
@@ -29,5 +34,27 @@ export class DistYardWorkComponent implements OnInit {
         }
       }
     );
+
+    this.unitPullSubscription = this.unitService.unitPulling.subscribe(
+      ex => {
+        if (ex) {
+          this.onPullingUnit = true;
+        } else {
+          this.onPullingUnit = false;
+        }
+      }
+    );
+
+    this.unitMoveSubscription = this.unitService.unitMoving.subscribe(
+      ex => {
+        if (ex) {
+          this.onMovingUnit = true;
+        } else {
+          this.onMovingUnit = false;
+        }
+      }
+    );
+
   }
+
 }

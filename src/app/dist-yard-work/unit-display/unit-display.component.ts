@@ -16,9 +16,7 @@ export class UnitDisplayComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.unit = this.unitService.unit;
-
-
+    this.unit = this.unitService.getSelectedUnit();
   }
 
 }

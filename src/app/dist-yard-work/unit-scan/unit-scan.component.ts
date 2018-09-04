@@ -11,7 +11,7 @@ import { UnitService } from '../unit.service';
 export class UnitScanComponent implements OnInit {
   unitScanForm: FormGroup;
 
-  @Output() scanningUnitStart = new EventEmitter<void>();
+  // @Output() scanningUnitStart = new EventEmitter<void>();
 
   constructor (
     private unitService: UnitService
