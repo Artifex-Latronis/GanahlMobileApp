@@ -33,6 +33,10 @@ export class UnitService {
     console.log('pulling unit for order: ' + orderID);
   }
 
+  moveUnit(binID) {
+    console.log('moving unit to: ' + binID);
+  }
+
   updateUnit(location) {
     console.log('updating unit to:' + location);
   }

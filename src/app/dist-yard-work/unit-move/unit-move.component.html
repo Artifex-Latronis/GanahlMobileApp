@@ -1,5 +1,14 @@
-<section class="unit-move-actions" fxLayout="column" fxLayoutGap="10px">
-  <div class="button-row" fxLayout="row" fxLayoutAlign="center">
-    <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
-  </div>
+<section>
+  <br>
+  <form class="unit-move-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="moveUnitForm"
+    (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input type="text" matInput placeholder="Enter New Area" formControlName="binID">
+      <mat-error>Missing Area ID</mat-error>
+    </mat-form-field>
+    <div class="unit-move-actions" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
+      <button type="submit" mat-raised-button color="primary" [disabled]="moveUnitForm.invalid">Submit</button>
+      <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+    </div>
+  </form>
 </section>
