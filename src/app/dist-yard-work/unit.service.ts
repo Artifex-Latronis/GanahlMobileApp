@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Subject, throwError, Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Unit } from './unit.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -16,25 +18,64 @@ export class UnitService {
   private pullingUnit = false;
   private movingUnit = false;
 
-  unit: Unit = {
-    ID: 'A7995',
-    binID: 'A01',
-    productID: '112204.08',
-    quantity: 180,
-    length: 8,
-    lengthType: 'Length',
-    size: '2 x 4',
-    description: 'STD & BTR DF S4S'
-  };
+  // unit: Unit = {
+  //   ID: 'A7995',
+  //   binID: 'A01',
+  //   productID: '112204.08',
+  //   quantity: 180,
+  //   length: 8,
+  //   lengthType: 'Length',
+  //   size: '2 x 4',
+  //   description: 'STD & BTR DF S4S'
+  // };
+
+  unit: Unit;
+  error;
+  headers;
 
   constructor (
     private httpClient: HttpClient
   ) { }
 
   // routines for scanning
-  startScanUnit(unitID: string) {
-    this.selectedUnit = this.getUnitTest();
-    this.unitSelected.next({ ...this.selectedUnit });
+  startScanUnit(unitID) {
+    // this.selectedUnit = this.getUnit(unitID);
+    // this.unitSelected.next({ ...this.selectedUnit });
+
+    // just logging the response
+    // this.getUnit(unitID).subscribe(
+    //   (response) => console.log(response),
+    //   (error) => console.log(error)
+    // );
+
+    // attempting full object
+    this.getUnitResponse(unitID)
+      // resp is of type 'HttpResponse<Config>'
+      .subscribe(resp => {
+        // display its headers
+        const keys = resp.headers.keys();
+        this.headers = keys.map(key =>
+          `${key}: ${resp.headers.get(key)}`
+        );
+        console.log(this.headers);
+
+        // access the body directly, which is typed as `Unit`.
+        this.unit = { ...resp.body };
+        console.log(this.unit);
+        this.selectedUnit = this.unit;
+        this.unitSelected.next({ ...this.selectedUnit });
+      });
+
+    // attempting to extract the data
+    // this.getUnit(unitID)
+    //   .subscribe(
+    //     (data: Unit) => {
+    //       this.unit = { ...data };
+    //       this.selectedUnit = this.unit;
+    //       this.unitSelected.next({ ...this.selectedUnit });
+    //     }
+    //   );
+
   }
 
   stopScanUnit() {
@@ -106,21 +147,42 @@ export class UnitService {
     return this.unit;
   }
 
-  getUnit(unitID) {
-    console.log('here we gooo');
+  // getUnit(unitID) {
+  //   console.log('here we go: ' + unitID);
 
-    return this.httpClient.get(
-      // 'https://myaccount.ganahl.com/api/dev/l/request/unit/92872'
+  //   return this.httpClient.get<Unit>('https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID)
+  //     .pipe(
+  //       catchError(this.httpErrorHandler)
+  //     );
+  // }
+
+  getUnitResponse(unitID): Observable<HttpResponse<Unit>> {
+    return this.httpClient.get<Unit>(
       'https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID, {
-        headers: new HttpHeaders()
-        // .append('x-mvconnect', '1884')
-        // .append(
-        //   'Authorization',
-        // tslint:disable-next-line:max-line-length
-        //   'Bearer  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNjaGFyZmYiLCJwYXNzd29yZCI6InRlc3QiLCJpYXQiOjE1MzU2NDIxNTQsImV4cCI6MTUzNzIwMjk5MzgzOCwiaXNzIjoiTXR1ZnM2WmV1eEVCY2M5cGZNd0xhSGpIZ0VxZGdhSVIifQ.9hktRxTVfx7+XRJDiVDYQIbs3WZb3PcKwmAd9rTnIvA'
-        // )
-        // .append('x-consumer-username', 'rr')
-      });
+        observe: 'response'
+      }
+    )
+      .pipe(
+        catchError(this.httpErrorHandler)
+      );
+  }
+
+  private httpErrorHandler(error: HttpErrorResponse) {
+    console.log('reached error handler');
+    if (error.error instanceof ErrorEvent) {
+      // a client-side or network error occured. Handle accordingly.
+      console.error('An error occured:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${JSON.stringify(error.error)}`
+      );
+    }
+    return throwError(
+      'Something bad happened; please try again later.'
+    );
   }
 
 }
