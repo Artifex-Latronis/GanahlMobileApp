@@ -5,8 +5,12 @@
     (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Scan Unit Tag" formControlName="unitID">
+      <button mat-button type="button" *ngIf="this.unitScanForm.get('unitID').value" matSuffix mat-icon-button
+        aria-label="Clear" (click)="this.unitScanForm.get('unitID').setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error>Missing Unit Number</mat-error>
     </mat-form-field>
-    <button type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
+    <button class="submit" type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
   </form>
 </section>

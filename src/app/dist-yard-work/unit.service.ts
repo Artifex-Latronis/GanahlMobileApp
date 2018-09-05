@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse, HttpResponse } from '@angul
 import { Subject, throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Unit } from './unit.model';
+import { UiService } from '../shared/ui.service';
 
 
 @Injectable({
@@ -34,47 +35,36 @@ export class UnitService {
   headers;
 
   constructor (
+    private uiService: UiService,
     private httpClient: HttpClient
   ) { }
 
   // routines for scanning
   startScanUnit(unitID) {
-    // this.selectedUnit = this.getUnit(unitID);
-    // this.unitSelected.next({ ...this.selectedUnit });
-
-    // just logging the response
-    // this.getUnit(unitID).subscribe(
-    //   (response) => console.log(response),
-    //   (error) => console.log(error)
-    // );
-
-    // attempting full object
     this.getUnitResponse(unitID)
-      // resp is of type 'HttpResponse<Config>'
-      .subscribe(resp => {
-        // display its headers
-        const keys = resp.headers.keys();
-        this.headers = keys.map(key =>
-          `${key}: ${resp.headers.get(key)}`
-        );
-        console.log(this.headers);
+      // resp is of type 'HttpResponse<Unit>'
+      .subscribe(
+        response => {
+          // the response
+          console.log(response);
 
-        // access the body directly, which is typed as `Unit`.
-        this.unit = { ...resp.body };
-        console.log(this.unit);
-        this.selectedUnit = this.unit;
-        this.unitSelected.next({ ...this.selectedUnit });
-      });
+          // display its headers
+          const keys = response.headers.keys();
+          this.headers = keys.map(key =>
+            `${key}: ${response.headers.get(key)}`
+          );
+          console.log(this.headers);
 
-    // attempting to extract the data
-    // this.getUnit(unitID)
-    //   .subscribe(
-    //     (data: Unit) => {
-    //       this.unit = { ...data };
-    //       this.selectedUnit = this.unit;
-    //       this.unitSelected.next({ ...this.selectedUnit });
-    //     }
-    //   );
+          // access the body directly, which is typed as `Unit`.
+          this.unit = { ...response.body };
+          console.log(this.unit);
+          this.selectedUnit = this.unit;
+          this.unitSelected.next({ ...this.selectedUnit });
+        },
+        error => {
+          this.uiService.showSnackbar(error, null, 5000);
+        }
+      );
 
   }
 
@@ -147,15 +137,6 @@ export class UnitService {
     return this.unit;
   }
 
-  // getUnit(unitID) {
-  //   console.log('here we go: ' + unitID);
-
-  //   return this.httpClient.get<Unit>('https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID)
-  //     .pipe(
-  //       catchError(this.httpErrorHandler)
-  //     );
-  // }
-
   getUnitResponse(unitID): Observable<HttpResponse<Unit>> {
     return this.httpClient.get<Unit>(
       'https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID, {
@@ -169,6 +150,7 @@ export class UnitService {
 
   private httpErrorHandler(error: HttpErrorResponse) {
     console.log('reached error handler');
+
     if (error.error instanceof ErrorEvent) {
       // a client-side or network error occured. Handle accordingly.
       console.error('An error occured:', error.error.message);
@@ -179,7 +161,13 @@ export class UnitService {
         `Backend returned code ${error.status}, ` +
         `body was: ${JSON.stringify(error.error)}`
       );
+      if (error.status === 404) {
+        return throwError(
+          `Unit not on File, please try again.`
+        );
+      }
     }
+
     return throwError(
       'Something bad happened; please try again later.'
     );

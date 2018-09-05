@@ -5,12 +5,20 @@
     (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Employee Number" formControlName="userID">
+      <button mat-button type="button" *ngIf="this.loginForm.get('userID').value" matSuffix mat-icon-button aria-label="Clear"
+        (click)="this.loginForm.get('userID').setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error>Missing Employee Number</mat-error>
     </mat-form-field>
     <mat-form-field>
       <input type="password" matInput placeholder="PIN" formControlName="password">
+      <button mat-button type="button" *ngIf="this.loginForm.get('password').value" matSuffix mat-icon-button
+        aria-label="Clear" (click)="this.loginForm.get('password').setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error>Missing Employee PIN</mat-error>
     </mat-form-field>
-    <button type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Submit</button>
+    <button class="submit" type="submit" mat-raised-button color="primary" [disabled]="loginForm.invalid">Submit</button>
   </form>
 </section>

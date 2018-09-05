@@ -4,6 +4,10 @@
     (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Scan Sales/Transfer Order Number" formControlName="orderID">
+      <button mat-button type="button" *ngIf="this.orderScanForm.get('orderID').value" matSuffix mat-icon-button
+        aria-label="Clear" (click)="this.orderScanForm.get('orderID').setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error>Missing Sales/Transfer Number</mat-error>
     </mat-form-field>
     <div class="unit-pull-actions" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">

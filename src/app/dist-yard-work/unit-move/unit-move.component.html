@@ -4,6 +4,10 @@
     (ngSubmit)="onSubmit()">
     <mat-form-field>
       <input type="text" matInput placeholder="Enter New Area" formControlName="binID">
+      <button mat-button type="button" *ngIf="this.moveUnitForm.get('binID').value" matSuffix mat-icon-button
+        aria-label="Clear" (click)="this.moveUnitForm.get('binID').setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error>Missing Area ID</mat-error>
     </mat-form-field>
     <div class="unit-move-actions" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
