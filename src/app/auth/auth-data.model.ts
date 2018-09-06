@@ -1,4 +1,4 @@
 export interface AuthData {
-  userID: string;
+  userName: string;
   password: string;
 }

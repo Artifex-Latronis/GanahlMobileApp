@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import * as fromApp from '../../app.reducer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthData } from '../auth-data.model';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   user: User;
   isLoading$: Observable<boolean>;
+  authData: AuthData;
 
   constructor (
     private authService: AuthService,
@@ -25,20 +27,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.loginForm = new FormGroup({
-      userID: new FormControl('', { validators: [Validators.required] }),
+      username: new FormControl('', { validators: [Validators.required] }),
       password: new FormControl('', { validators: [Validators.required] })
     });
   }
 
   onSubmit() {
-    this.authService.login({
-      userID: this.loginForm.value.userID,
-      password: this.loginForm.value.password
-    });
-
-    // console.log(this.loginForm.value.user);
-    // console.log(this.loginForm.value.password);
-
+    this.authData = { ... this.loginForm.value };
+    this.authService.login(this.authData);
   }
 
 }

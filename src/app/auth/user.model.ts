@@ -1,4 +1,5 @@
 export interface User {
-  userID: string;
+  empName: string;
+  jwt: string;
   userName: string;
 }
