@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
 import { UnitService } from './dist-yard-work/unit.service';
 import { UnitActivityService } from './dist-yard-work/unit-activity.service';
@@ -17,6 +17,7 @@ import { appReducer } from './app.reducer';
 import { AppRoutingModule } from './/app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
+import { AuthInterceptor } from './shared/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,13 @@ import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
     AuthModule,
     DistYardWorkModule
   ],
-  providers: [AuthService, UiService, UnitService, UnitActivityService],
+  providers: [
+    AuthService,
+    UiService,
+    UnitService,
+    UnitActivityService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [ConfirmDialogComponent]
 })

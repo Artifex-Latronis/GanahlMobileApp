@@ -4,6 +4,8 @@ import { Subject, throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { Unit } from './unit.model';
 import { UiService } from '../shared/ui.service';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -36,36 +38,48 @@ export class UnitService {
 
   constructor (
     private uiService: UiService,
+    private router: Router,
+    private authService: AuthService,
     private httpClient: HttpClient
   ) { }
 
   // routines for scanning
   startScanUnit(unitID) {
-    this.getUnitResponse(unitID)
-      // resp is of type 'HttpResponse<Unit>'
+    // this.getUnitResponse(unitID);
+    // resp is of type 'HttpResponse<Unit>'
+    // .subscribe(
+    //   response => {
+    //     // the response
+    //     console.log(response);
+
+    //     // display its headers
+    //     const keys = response.headers.keys();
+    //     this.headers = keys.map(key =>
+    //       `${key}: ${response.headers.get(key)}`
+    //     );
+    //     console.log(this.headers);
+
+    //     // access the body directly, which is typed as `Unit`.
+    //     this.unit = { ...response.body };
+    //     console.log('this is the first: ', this.unit);
+    //     this.selectedUnit = this.unit;
+    //     this.unitSelected.next({ ...this.selectedUnit });
+    //   },
+    //   error => {
+    //     this.uiService.showSnackbar(error, null, 5000);
+    //   }
+    // );
+
+    this.getUnit(unitID)
       .subscribe(
-        response => {
-          // the response
-          console.log(response);
-
-          // display its headers
-          const keys = response.headers.keys();
-          this.headers = keys.map(key =>
-            `${key}: ${response.headers.get(key)}`
-          );
-          console.log(this.headers);
-
-          // access the body directly, which is typed as `Unit`.
-          this.unit = { ...response.body };
+        (data: Unit) => {
+          this.unit = { ...data };
           console.log(this.unit);
-          this.selectedUnit = this.unit;
-          this.unitSelected.next({ ...this.selectedUnit });
         },
         error => {
           this.uiService.showSnackbar(error, null, 5000);
         }
       );
-
   }
 
   stopScanUnit() {
@@ -133,23 +147,36 @@ export class UnitService {
     return { ...this.selectedUnit };
   }
 
-  getUnitTest() {
-    return this.unit;
-  }
+  getUnit(unitID) {
 
-  getUnitResponse(unitID): Observable<HttpResponse<Unit>> {
-    return this.httpClient.get<Unit>(
-      'https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID, {
-        observe: 'response'
-      }
-    )
+    const token = this.authService.getToken();
+    const url = 'https://myaccount.ganahl.com/api/dev/request/unit/';
+    const headers = {
+      headers: new HttpHeaders({
+        // 'x-mvconnect': '1884',
+        // tslint:disable-next-line:max-line-length
+        // 'Authorization': 'Bearer ' + token
+      })
+    };
+
+    return this.httpClient.get<Unit>(url + unitID)
       .pipe(
         catchError(this.httpErrorHandler)
       );
   }
 
+  // getUnitResponse(unitID): Observable<HttpResponse<Unit>> {
+  //   return this.httpClient.get<Unit>(
+  //     'https://myaccount.ganahl.com/api/dev/l/request/unit/' + unitID, {
+  //       observe: 'response'
+  //     }
+  //   )
+  //     .pipe(
+  //       catchError(this.httpErrorHandler)
+  //     );
+  // }
+
   private httpErrorHandler(error: HttpErrorResponse) {
-    console.log('reached error handler');
 
     if (error.error instanceof ErrorEvent) {
       // a client-side or network error occured. Handle accordingly.
@@ -161,11 +188,18 @@ export class UnitService {
         `Backend returned code ${error.status}, ` +
         `body was: ${JSON.stringify(error.error)}`
       );
-      if (error.status === 404) {
-        return throwError(
-          `Unit not on File, please try again.`
-        );
+
+      switch (error.status) {
+        case 401:
+          return throwError(`Expired Token, please log in again`);
+        case 403:
+          return throwError(`Invalid Token, please log in again`);
+        case 404:
+          return throwError(`Not on File, please check your input and try again.`);
+        default:
+          return throwError(`Uncaught Error Code: ${error.status}`);
       }
+
     }
 
     return throwError(

@@ -13,6 +13,7 @@ export class AuthService {
   authChange = new Subject<boolean>();
   private user: User;
 
+  token: string;
 
   constructor (
     private router: Router,
@@ -27,6 +28,8 @@ export class AuthService {
       userID: authData.userID,
       userName: 'Remington Richards'
     };
+    // tslint:disable-next-line:max-line-length
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNjaGFyZmYiLCJwYXNzd29yZCI6InRlc3QiLCJpYXQiOjE1MzYxNjM5ODIsImV4cCI6MTUzNjE5Mjc2OSwiaXNzIjoiV0ZtTmhVN0I3dDZoTmVXZnZrRTZsMHNvYlIxcGFEY0EifQ.WSACQMSjWGpkA6XjrWJ419PyQWDAJkwKoVDC07nS8Uk';
     this.authChange.next(true);
     this.router.navigate(['/yard']);
   }
@@ -37,6 +40,10 @@ export class AuthService {
 
   isAuth() {
     return this.user != null;
+  }
+
+  getToken() {
+    return this.token;
   }
 
   logout() {
