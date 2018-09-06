@@ -29,7 +29,7 @@ export class AuthService {
       userName: 'Remington Richards'
     };
     // tslint:disable-next-line:max-line-length
-    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNjaGFyZmYiLCJwYXNzd29yZCI6InRlc3QiLCJpYXQiOjE1MzYxNjM5ODIsImV4cCI6MTUzNjE5Mjc2OSwiaXNzIjoiV0ZtTmhVN0I3dDZoTmVXZnZrRTZsMHNvYlIxcGFEY0EifQ.WSACQMSjWGpkA6XjrWJ419PyQWDAJkwKoVDC07nS8Uk';
+    this.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNjaGFyZmYiLCJwYXNzd29yZCI6InRlc3QiLCJpYXQiOjE1MzYyMjY5MTIsImV4cCI6MTUzNjI1NTY5OCwiaXNzIjoickJ4UGtkRXpCWTBraE50VmFoS2ZQdkFscmdQZm5BWDcifQ.5oujiZH2uJafp09MbJ6P08HcYNERcPufxbbVzug3bwQ';
     this.authChange.next(true);
     this.router.navigate(['/yard']);
   }

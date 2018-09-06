@@ -17,7 +17,7 @@ import { appReducer } from './app.reducer';
 import { AppRoutingModule } from './/app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
-import { AuthInterceptor } from './shared/auth.interceptor';
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import { AuthInterceptor } from './shared/auth.interceptor';
     UiService,
     UnitService,
     UnitActivityService,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    httpInterceptorProviders
   ],
   bootstrap: [AppComponent],
   entryComponents: [ConfirmDialogComponent]

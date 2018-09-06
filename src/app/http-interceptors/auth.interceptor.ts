@@ -9,12 +9,13 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor (private authService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(`Auth Intercepted Original`, request);
+    // console.log(`Auth Intercepted Original`, request);
 
     const copiedRequest = request.clone({
-      headers: request.headers
-        .append('x-mvconnect', '1884')
-        .append('Authorization', 'Bearer ' + this.authService.getToken())
+      setHeaders: {
+        'x-mvconnect': '1884',
+        'Authorization': 'Bearer ' + this.authService.getToken()
+      }
     });
 
     console.log(`Auth Intercepted Clone`, copiedRequest);
