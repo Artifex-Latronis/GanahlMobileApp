@@ -11,6 +11,7 @@
       </button>
       <mat-error>Missing Unit Number</mat-error>
     </mat-form-field>
-    <button class="submit" type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
+    <button *ngIf="!(isLoading$ | async)" class="submit" type="submit" mat-raised-button color="primary" [disabled]="unitScanForm.invalid">Submit</button>
+    <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
   </form>
 </section>

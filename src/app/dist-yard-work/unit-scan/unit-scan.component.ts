@@ -1,7 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Unit } from '../unit.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UnitService } from '../unit.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../app.reducer';
 
 @Component({
   selector: 'app-unit-scan',
@@ -11,13 +15,16 @@ import { UnitService } from '../unit.service';
 export class UnitScanComponent implements OnInit {
   unitScanForm: FormGroup;
   unit: Unit;
-  error;
+  isLoading$: Observable<boolean>;
 
   constructor (
-    private unitService: UnitService
+    private unitService: UnitService,
+    private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
+    this.store.subscribe(data => console.log(data));
+    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.unitScanForm = new FormGroup({
       unitID: new FormControl('', { validators: [Validators.required] })
     });

@@ -35,9 +35,11 @@ export class AuthService {
           console.log(this.user);
           this.authChange.next(true);
           this.router.navigate(['/yard']);
+          this.store.dispatch({ type: 'STOP_LOADING' });
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
+          this.store.dispatch({ type: 'STOP_LOADING' });
         }
       );
 

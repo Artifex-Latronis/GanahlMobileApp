@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Unit } from './unit.model';
+import * as fromApp from '../app.reducer';
 import { UiService } from '../shared/ui.service';
+import { Store } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +23,13 @@ export class UnitService {
 
   constructor (
     private uiService: UiService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private store: Store<{ ui: fromApp.State }>
   ) { }
 
   // routines for scanning
   startScanUnit(unitID) {
+    this.store.dispatch({ type: 'START_LOADING' });
     this.getUnit(unitID)
       .subscribe(
         (data: Unit) => {
@@ -33,9 +37,11 @@ export class UnitService {
           console.log(this.unit);
           this.selectedUnit = this.unit;
           this.unitSelected.next({ ... this.selectedUnit });
+          this.store.dispatch({ type: 'STOP_LOADING' });
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
+          this.store.dispatch({ type: 'STOP_LOADING' });
         }
       );
   }
