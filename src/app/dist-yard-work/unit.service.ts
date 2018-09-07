@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { UnitActivityService } from './unit-activity.service';
 import { UnitActivity } from './unit-activity.model';
 import { AuthService } from '../auth/auth.service';
+import { LoggingService } from '../shared/logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class UnitService {
     private httpClient: HttpClient,
     private unitActivityService: UnitActivityService,
     private store: Store<{ ui: fromApp.State }>,
-    private authService: AuthService
+    private authService: AuthService,
+    private loggingService: LoggingService
   ) { }
 
   // routines for scanning
@@ -40,7 +42,9 @@ export class UnitService {
       .subscribe(
         (data: Unit) => {
           this.unit = { ...data };
-          console.log(this.unit);
+          if (this.loggingService.showHttpResponseObjectsInConsole()) {
+            console.log(this.unit);
+          }
           this.selectedUnit = this.unit;
           this.unitSelected.next({ ... this.selectedUnit });
           this.store.dispatch({ type: 'STOP_LOADING' });

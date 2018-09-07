@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../app.reducer';
 import { map } from 'rxjs/operators';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-unit-pull',
@@ -21,11 +22,14 @@ export class UnitPullComponent implements OnInit {
   constructor (
     private unitService: UnitService,
     private dialog: MatDialog,
+    private loggingService: LoggingService,
     private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log('unit-pull', data));
+    this.store.subscribe(data => {
+      return this.loggingService.showStateLoadingInConsole() ? console.log('unit-pull: ', data) : null;
+    });
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.orderScanForm = new FormGroup({
       orderID: new FormControl('', { validators: [Validators.required] })

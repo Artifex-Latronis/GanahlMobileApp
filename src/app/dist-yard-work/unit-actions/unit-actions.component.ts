@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import * as fromApp from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-unit-actions',
@@ -20,11 +21,14 @@ export class UnitActionsComponent implements OnInit {
   constructor (
     private unitService: UnitService,
     private dialog: MatDialog,
+    private loggingService: LoggingService,
     private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log('unit-actions', data));
+    this.store.subscribe(data => {
+      return this.loggingService.showStateLoadingInConsole() ? console.log('unit-actions: ', data) : null;
+    });
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
   }
 

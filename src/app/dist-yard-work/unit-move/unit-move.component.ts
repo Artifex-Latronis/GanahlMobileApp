@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import * as fromApp from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-unit-move',
@@ -24,11 +25,14 @@ export class UnitMoveComponent implements OnInit {
   constructor (
     private unitService: UnitService,
     private dialog: MatDialog,
+    private loggingService: LoggingService,
     private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log('unit-move', data));
+    this.store.subscribe(data => {
+      return this.loggingService.showStateLoadingInConsole() ? console.log('unit-move: ', data) : null;
+    });
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.moveUnitForm = new FormGroup({
       binID: new FormControl('', { validators: [Validators.required] })

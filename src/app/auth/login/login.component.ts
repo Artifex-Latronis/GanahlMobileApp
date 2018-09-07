@@ -7,6 +7,7 @@ import * as fromApp from '../../app.reducer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthData } from '../auth-data.model';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-login',
@@ -21,11 +22,14 @@ export class LoginComponent implements OnInit {
 
   constructor (
     private authService: AuthService,
+    private loggingService: LoggingService,
     private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log('login', data));
+    this.store.subscribe(data => {
+      return this.loggingService.showStateLoadingInConsole() ? console.log('login: ', data) : null;
+    });
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.loginForm = new FormGroup({
       username: new FormControl('', { validators: [Validators.required] }),

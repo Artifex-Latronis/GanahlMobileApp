@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../app.reducer';
+import { LoggingService } from '../../shared/logging.service';
 
 @Component({
   selector: 'app-unit-scan',
@@ -19,11 +20,14 @@ export class UnitScanComponent implements OnInit {
 
   constructor (
     private unitService: UnitService,
+    private loggingService: LoggingService,
     private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log('unit-scan', data));
+    this.store.subscribe(data => {
+      return this.loggingService.showStateLoadingInConsole() ? console.log('unit-scan: ', data) : null;
+    });
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.unitScanForm = new FormGroup({
       unitID: new FormControl('', { validators: [Validators.required] })

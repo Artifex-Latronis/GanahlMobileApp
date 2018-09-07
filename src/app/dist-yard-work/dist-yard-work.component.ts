@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UnitService } from './unit.service';
-import { UnitActivityService } from './unit-activity.service';
 
 @Component({
   selector: 'app-dist-yard-work',
@@ -19,8 +18,7 @@ export class DistYardWorkComponent implements OnInit {
   unitMoveSubscription: Subscription;
 
   constructor (
-    private unitService: UnitService,
-    private unitActivityService: UnitActivityService
+    private unitService: UnitService
   ) { }
 
   ngOnInit() {

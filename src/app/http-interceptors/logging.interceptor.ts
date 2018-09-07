@@ -3,11 +3,15 @@ import { Observable, throwError } from 'rxjs';
 import { tap, finalize, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { LoggingService } from '../shared/logging.service';
 
 @Injectable()
 export class LoggingInterceptor implements HttpInterceptor {
 
-  constructor (private authService: AuthService) { }
+  constructor (
+    private authService: AuthService,
+    private loggingService: LoggingService
+  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const started = Date.now();
@@ -20,7 +24,6 @@ export class LoggingInterceptor implements HttpInterceptor {
           // Succeeds when there is a response; ignore other events
           event => {
             status = event instanceof HttpResponse ? 'succeeded' : '';
-            console.log('tap event: ', event);
           },
           // Operation failed; error is an HttpErrorResponse
           error => {
@@ -57,9 +60,12 @@ export class LoggingInterceptor implements HttpInterceptor {
         finalize(() => {
           const elapsed = Date.now() - started;
           const message = `${request.method} ${request.urlWithParams} ${status} in ${elapsed} ms.`;
-          console.log(message);
+          if (this.loggingService.showHttpRequestStatusInConsole()) {
+            console.log(message);
+          }
         })
       );
+
   }
 
   private httpErrorHandler(error: HttpErrorResponse) {

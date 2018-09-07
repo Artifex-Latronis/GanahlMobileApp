@@ -7,6 +7,7 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UiService } from '../shared/ui.service';
+import { LoggingService } from '../shared/logging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class AuthService {
     private router: Router,
     private store: Store<{ ui: fromApp.State }>,
     private httpClient: HttpClient,
-    private uiService: UiService
+    private uiService: UiService,
+    private loggingService: LoggingService
   ) { }
 
 
@@ -32,7 +34,9 @@ export class AuthService {
       .subscribe(
         (data: User) => {
           this.user = { ...data };
-          console.log(this.user);
+          if (this.loggingService.showHttpResponseObjectsInConsole()) {
+            console.log(this.user);
+          }
           this.authChange.next(true);
           this.router.navigate(['/yard']);
           this.store.dispatch({ type: 'STOP_LOADING' });
@@ -66,4 +70,5 @@ export class AuthService {
     this.authChange.next(false);
     this.router.navigate(['/login']);
   }
+
 }
