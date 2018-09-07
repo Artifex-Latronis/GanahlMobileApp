@@ -1,6 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UnitService } from '../unit.service';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-unit-pull',
@@ -12,7 +14,8 @@ export class UnitPullComponent implements OnInit {
   orderScanForm: FormGroup;
 
   constructor (
-    private unitService: UnitService
+    private unitService: UnitService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -22,7 +25,19 @@ export class UnitPullComponent implements OnInit {
   }
 
   onSubmit() {
-    this.unitService.completePullingUnit(this.orderScanForm.value.orderID);
+    const orderID = this.orderScanForm.value.orderID.toUpperCase();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message: 'Pull Unit for Order#: ' + orderID
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.unitService.completePullingUnit(orderID);
+      }
+    });
+
   }
 
   onCancel() {

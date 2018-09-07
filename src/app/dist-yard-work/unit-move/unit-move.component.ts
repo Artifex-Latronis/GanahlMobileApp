@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { UnitService } from '../unit.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-unit-move',
@@ -15,7 +17,8 @@ export class UnitMoveComponent implements OnInit {
   @Output() scanningUnitEnd = new EventEmitter<void>();
 
   constructor (
-    private unitService: UnitService
+    private unitService: UnitService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -25,7 +28,19 @@ export class UnitMoveComponent implements OnInit {
   }
 
   onSubmit() {
-    this.unitService.completeMovingUnit(this.moveUnitForm.value.binID);
+    const binID = this.moveUnitForm.value.binID.toUpperCase();
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        message: 'Move Unit to Area: ' + binID
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.unitService.completeMovingUnit(binID);
+      }
+    });
+
   }
 
   onCancel() {
