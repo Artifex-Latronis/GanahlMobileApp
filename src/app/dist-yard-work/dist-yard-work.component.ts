@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription, Observable, interval } from 'rxjs';
 import { UnitService } from './unit.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { UnitService } from './unit.service';
   templateUrl: './dist-yard-work.component.html',
   styleUrls: ['./dist-yard-work.component.css']
 })
-export class DistYardWorkComponent implements OnInit {
+export class DistYardWorkComponent implements OnInit, OnDestroy {
 
   onUnitScan = false;
   onPullingUnit = false;
@@ -16,6 +16,7 @@ export class DistYardWorkComponent implements OnInit {
   unitScanSubscription: Subscription;
   unitPullSubscription: Subscription;
   unitMoveSubscription: Subscription;
+  testSubscription: Subscription;
 
   constructor (
     private unitService: UnitService
@@ -55,4 +56,9 @@ export class DistYardWorkComponent implements OnInit {
 
   }
 
+  ngOnDestroy() {
+    this.unitScanSubscription.unsubscribe();
+    this.unitPullSubscription.unsubscribe();
+    this.unitMoveSubscription.unsubscribe();
+  }
 }

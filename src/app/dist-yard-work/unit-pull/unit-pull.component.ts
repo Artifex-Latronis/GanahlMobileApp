@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UnitService } from '../unit.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
-import { Observable } from 'rxjs';
+import { Observable, interval } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../app.reducer';
 import { map } from 'rxjs/operators';
