@@ -2,6 +2,10 @@
   padding: 30px;
 }
 
+.unit-actions-loading {
+  padding: 50px
+}
+
 .button-row button {
   width: 45%;
   height: 50px;
