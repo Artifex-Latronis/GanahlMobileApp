@@ -23,7 +23,7 @@ export class UnitScanComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log(data));
+    this.store.subscribe(data => console.log('unit-scan', data));
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.unitScanForm = new FormGroup({
       unitID: new FormControl('', { validators: [Validators.required] })

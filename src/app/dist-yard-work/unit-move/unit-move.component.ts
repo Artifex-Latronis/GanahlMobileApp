@@ -3,6 +3,10 @@ import { UnitService } from '../unit.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { Observable } from 'rxjs';
+import * as fromApp from '../../app.reducer';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-unit-move',
@@ -12,16 +16,20 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 export class UnitMoveComponent implements OnInit {
 
   moveUnitForm: FormGroup;
+  isLoading$: Observable<boolean>;
 
   @Output() movingUnitEnd = new EventEmitter<void>();
   @Output() scanningUnitEnd = new EventEmitter<void>();
 
   constructor (
     private unitService: UnitService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private store: Store<{ ui: fromApp.State }>
   ) { }
 
   ngOnInit() {
+    this.store.subscribe(data => console.log('unit-move', data));
+    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.moveUnitForm = new FormGroup({
       binID: new FormControl('', { validators: [Validators.required] })
     });

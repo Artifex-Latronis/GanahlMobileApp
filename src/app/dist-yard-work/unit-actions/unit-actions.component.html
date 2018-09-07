@@ -1,13 +1,15 @@
 <section class="unit-actions" fxLayout="column" fxLayoutGap="50px">
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button mat-raised-button color="accent" (click)="onPullUnit()">Pull</button>
-    <button mat-raised-button color="accent" (click)="onMoveUnit()" (click)="onMovingUnit = true">Move</button>
+    <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+    <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent" (click)="onPullUnit()">Pull</button>
+    <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent" (click)="onMoveUnit()" (click)="onMovingUnit = true">Move</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="space-between">
-    <button mat-raised-button color="accent" (click)="onTransferUnit('West Yard')">West Yard</button>
-    <button mat-raised-button color="accent" (click)="onTransferUnit('B Shed')">B Shed</button>
+    <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent" (click)="onTransferUnit('West Yard')">West
+      Yard</button>
+    <button *ngIf="!(isLoading$ | async)" mat-raised-button color="accent" (click)="onTransferUnit('B Shed')">B Shed</button>
   </div>
   <div class="button-row" fxLayout="row" fxLayoutAlign="center">
-    <button mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+    <button *ngIf="!(isLoading$ | async)" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
   </div>
 </section>

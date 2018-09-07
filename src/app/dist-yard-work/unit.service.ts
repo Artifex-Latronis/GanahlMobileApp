@@ -58,7 +58,9 @@ export class UnitService {
   }
 
   completePullingUnit(orderID) {
+    this.store.dispatch({ type: 'START_LOADING' });
     console.log('completed pull for order: ' + orderID);
+    this.store.dispatch({ type: 'STOP_LOADING' });
     this.stopPullingUnit();
     this.stopScanUnit();
   }
@@ -79,7 +81,9 @@ export class UnitService {
   }
 
   completeMovingUnit(binID) {
+    this.store.dispatch({ type: 'START_LOADING' });
     console.log('completed move to bin: ' + binID);
+    this.store.dispatch({ type: 'STOP_LOADING' });
     this.stopMovingUnit();
     this.stopScanUnit();
   }
@@ -102,7 +106,9 @@ export class UnitService {
 
   // routines for transferring
   transferUnit(location) {
+    this.store.dispatch({ type: 'START_LOADING' });
     console.log('transferring Unit to ' + location);
+    this.store.dispatch({ type: 'STOP_LOADING' });
     this.stopScanUnit();
   }
 

@@ -11,8 +11,9 @@
       <mat-error>Missing Sales/Transfer Number</mat-error>
     </mat-form-field>
     <div class="unit-pull-actions" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
-      <button type="submit" mat-raised-button color="primary" [disabled]="orderScanForm.invalid">Submit</button>
-      <button type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+      <button *ngIf="!(isLoading$ | async)" type="submit" mat-raised-button color="primary" [disabled]="orderScanForm.invalid">Submit</button>
+      <button *ngIf="!(isLoading$ | async)" type="button" mat-raised-button color="warn" (click)="onCancel()">Cancel</button>
+      <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
     </div>
   </form>
 </section>

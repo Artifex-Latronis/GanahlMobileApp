@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => console.log(data));
+    this.store.subscribe(data => console.log('login', data));
     this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
     this.loginForm = new FormGroup({
       username: new FormControl('', { validators: [Validators.required] }),
