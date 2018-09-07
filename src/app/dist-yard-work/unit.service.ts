@@ -5,6 +5,9 @@ import { Unit } from './unit.model';
 import * as fromApp from '../app.reducer';
 import { UiService } from '../shared/ui.service';
 import { Store } from '@ngrx/store';
+import { UnitActivityService } from './unit-activity.service';
+import { UnitActivity } from './unit-activity.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +23,14 @@ export class UnitService {
   private movingUnit = false;
 
   unit: Unit;
+  // unitActivity: UnitActivity;
 
   constructor (
     private uiService: UiService,
     private httpClient: HttpClient,
-    private store: Store<{ ui: fromApp.State }>
+    private unitActivityService: UnitActivityService,
+    private store: Store<{ ui: fromApp.State }>,
+    private authService: AuthService
   ) { }
 
   // routines for scanning
@@ -59,10 +65,28 @@ export class UnitService {
 
   completePullingUnit(orderID) {
     this.store.dispatch({ type: 'START_LOADING' });
-    console.log('completed pull for order: ' + orderID);
-    this.store.dispatch({ type: 'STOP_LOADING' });
-    this.stopPullingUnit();
-    this.stopScanUnit();
+    console.log('starting pull for order: ' + orderID);
+
+    const newActivity: UnitActivity = {
+      unitID: this.getSelectedUnit().ID,
+      type: 'pull',
+      empID: this.authService.getCurrentUser().userName,
+      docID: orderID
+    };
+
+    this.unitActivityService.putUnitActivity(newActivity)
+      .subscribe(
+        data => {
+          console.log('complete Pull Unit', data);
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.stopAllUnitActions();
+        },
+        error => {
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.uiService.showSnackbar(error, null, 3000);
+        }
+      );
+
   }
 
   cancelPullingUnit() {
@@ -82,10 +106,28 @@ export class UnitService {
 
   completeMovingUnit(binID) {
     this.store.dispatch({ type: 'START_LOADING' });
-    console.log('completed move to bin: ' + binID);
-    this.store.dispatch({ type: 'STOP_LOADING' });
-    this.stopMovingUnit();
-    this.stopScanUnit();
+    console.log('starting move to bin: ' + binID);
+
+    const newActivity: UnitActivity = {
+      unitID: this.getSelectedUnit().ID,
+      type: 'move',
+      empID: this.authService.getCurrentUser().userName,
+      binID: binID
+    };
+
+    this.unitActivityService.putUnitActivity(newActivity)
+      .subscribe(
+        data => {
+          console.log('Completed Move Unit ', data);
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.stopAllUnitActions();
+        },
+        error => {
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.uiService.showSnackbar(error, null, 3000);
+        }
+      );
+
   }
 
   cancelMovingUnit() {
@@ -97,19 +139,38 @@ export class UnitService {
     this.unitMoving.next(this.movingUnit);
   }
 
+  // routines for transferring
+  transferUnit(location) {
+    this.store.dispatch({ type: 'START_LOADING' });
+    console.log('transferring Unit to ' + location);
+
+    const newActivity: UnitActivity = {
+      unitID: this.getSelectedUnit().ID,
+      type: 'xfr',
+      empID: this.authService.getCurrentUser().userName,
+      docID: location
+    };
+
+    this.unitActivityService.putUnitActivity(newActivity)
+      .subscribe(
+        data => {
+          console.log('complete Xfr Unit ', data);
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.stopAllUnitActions();
+        },
+        error => {
+          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.uiService.showSnackbar(error, null, 3000);
+        }
+      );
+
+  }
+
   // routine for bailing out via navigation menu
   stopAllUnitActions() {
     this.stopScanUnit();
     this.cancelMovingUnit();
     this.cancelPullingUnit();
-  }
-
-  // routines for transferring
-  transferUnit(location) {
-    this.store.dispatch({ type: 'START_LOADING' });
-    console.log('transferring Unit to ' + location);
-    this.store.dispatch({ type: 'STOP_LOADING' });
-    this.stopScanUnit();
   }
 
   // routines for getting unit information

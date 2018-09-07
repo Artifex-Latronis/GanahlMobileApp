@@ -38,7 +38,6 @@ export class LoggingInterceptor implements HttpInterceptor {
                   break;
                 // Record not found, user is notified, program waits for new input
                 case 404:
-
                   break;
                 default:
                   // unexpected error codes, log user out to be safe.

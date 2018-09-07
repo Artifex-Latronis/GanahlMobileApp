@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { UnitActivity } from './unit-activity.model';
-import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitActivityService {
 
-  constructor () { }
+  unitActivity: UnitActivity;
+
+  constructor (private httpClient: HttpClient) { }
+
+  putUnitActivity(unitActivity) {
+    return this.httpClient.put<UnitActivity>('https://myaccount.ganahl.com/api/dev/request/unitActivity/', unitActivity);
+  }
 
 }
