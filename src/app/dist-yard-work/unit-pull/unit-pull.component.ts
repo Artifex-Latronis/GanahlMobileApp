@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Observable, interval } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../app.reducers';
 import { map } from 'rxjs/operators';
 import { LoggingService } from '../../shared/logging.service';
 

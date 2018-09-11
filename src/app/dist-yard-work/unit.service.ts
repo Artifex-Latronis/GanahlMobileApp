@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Unit } from './unit.model';
-import * as fromRoot from '../app.reducer';
+import * as fromRoot from '../app.reducers';
 import * as UI from '../shared/ui.actions';
 import { UiService } from '../shared/ui.service';
 import { Store } from '@ngrx/store';

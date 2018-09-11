@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { User } from '../../auth/user.model';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../app.reducers';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({

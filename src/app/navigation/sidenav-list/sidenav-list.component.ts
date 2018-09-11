@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { User } from '../../auth/user.model';
 import { UnitService } from '../../dist-yard-work/unit.service';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../app.reducers';
 
 @Component({
   selector: 'app-sidenav-list',

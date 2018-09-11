@@ -5,7 +5,7 @@ import { UnitService } from '../unit.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../app.reducers';
 import { LoggingService } from '../../shared/logging.service';
 
 @Component({

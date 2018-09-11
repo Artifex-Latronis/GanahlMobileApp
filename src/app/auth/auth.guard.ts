@@ -2,7 +2,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../app.reducer';
+import * as fromRoot from '../app.reducers';
 import { take } from 'rxjs/operators';
 
 @Injectable()

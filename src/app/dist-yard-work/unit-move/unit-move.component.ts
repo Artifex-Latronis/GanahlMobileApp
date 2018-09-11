@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Observable, Subscription, interval } from 'rxjs';
-import * as fromRoot from '../../app.reducer';
+import * as fromRoot from '../../app.reducers';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { LoggingService } from '../../shared/logging.service';

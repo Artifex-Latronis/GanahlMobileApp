@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../app.reducer';
+import * as fromRoot from '../app.reducers';
 import * as UI from '../shared/ui.actions';
 import * as Auth from './auth.actions';
 import { User } from './user.model';
