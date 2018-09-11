@@ -3,7 +3,7 @@ import { UnitService } from '../unit.service';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Observable } from 'rxjs';
-import * as fromApp from '../../app.reducer';
+import * as fromRoot from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { LoggingService } from '../../shared/logging.service';
@@ -22,14 +22,14 @@ export class UnitActionsComponent implements OnInit {
     private unitService: UnitService,
     private dialog: MatDialog,
     private loggingService: LoggingService,
-    private store: Store<{ ui: fromApp.State }>
+    private store: Store<fromRoot.State>
   ) { }
 
   ngOnInit() {
     this.store.subscribe(data => {
       return this.loggingService.showStateLoadingInConsole() ? console.log('unit-actions: ', data) : null;
     });
-    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
   }
 
   onPullUnit() {

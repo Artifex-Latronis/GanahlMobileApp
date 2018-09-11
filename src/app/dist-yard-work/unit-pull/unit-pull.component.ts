@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Observable, interval } from 'rxjs';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../app.reducer';
+import * as fromRoot from '../../app.reducer';
 import { map } from 'rxjs/operators';
 import { LoggingService } from '../../shared/logging.service';
 
@@ -23,14 +23,14 @@ export class UnitPullComponent implements OnInit {
     private unitService: UnitService,
     private dialog: MatDialog,
     private loggingService: LoggingService,
-    private store: Store<{ ui: fromApp.State }>
+    private store: Store<fromRoot.State>
   ) { }
 
   ngOnInit() {
     this.store.subscribe(data => {
       return this.loggingService.showStateLoadingInConsole() ? console.log('unit-pull: ', data) : null;
     });
-    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.orderScanForm = new FormGroup({
       orderID: new FormControl('', { validators: [Validators.required] })
     });

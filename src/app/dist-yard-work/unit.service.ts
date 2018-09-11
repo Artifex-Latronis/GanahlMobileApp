@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Unit } from './unit.model';
-import * as fromApp from '../app.reducer';
+import * as fromRoot from '../app.reducer';
+import * as UI from '../shared/ui.actions';
 import { UiService } from '../shared/ui.service';
 import { Store } from '@ngrx/store';
 import { UnitActivityService } from './unit-activity.service';
@@ -30,14 +31,14 @@ export class UnitService {
     private uiService: UiService,
     private httpClient: HttpClient,
     private unitActivityService: UnitActivityService,
-    private store: Store<{ ui: fromApp.State }>,
+    private store: Store<fromRoot.State>,
     private authService: AuthService,
     private loggingService: LoggingService
   ) { }
 
   // routines for scanning
   startScanUnit(unitID) {
-    this.store.dispatch({ type: 'START_LOADING' });
+    this.store.dispatch(new UI.StartLoading());
     this.getUnit(unitID)
       .subscribe(
         (data: Unit) => {
@@ -47,11 +48,11 @@ export class UnitService {
           }
           this.selectedUnit = this.unit;
           this.unitSelected.next({ ... this.selectedUnit });
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
         }
       );
   }
@@ -68,7 +69,7 @@ export class UnitService {
   }
 
   completePullingUnit(orderID) {
-    this.store.dispatch({ type: 'START_LOADING' });
+    this.store.dispatch(new UI.StartLoading());
     console.log('starting pull for order: ' + orderID);
 
     const newActivity: UnitActivity = {
@@ -82,11 +83,11 @@ export class UnitService {
       .subscribe(
         data => {
           console.log('complete Pull Unit', data);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
         },
         error => {
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.uiService.showSnackbar(error, null, 3000);
         }
       );
@@ -109,7 +110,7 @@ export class UnitService {
   }
 
   completeMovingUnit(binID) {
-    this.store.dispatch({ type: 'START_LOADING' });
+    this.store.dispatch(new UI.StartLoading());
     console.log('starting move to bin: ' + binID);
 
     const newActivity: UnitActivity = {
@@ -123,11 +124,11 @@ export class UnitService {
       .subscribe(
         data => {
           console.log('Completed Move Unit ', data);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
         },
         error => {
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.uiService.showSnackbar(error, null, 3000);
         }
       );
@@ -145,7 +146,7 @@ export class UnitService {
 
   // routines for transferring
   transferUnit(location) {
-    this.store.dispatch({ type: 'START_LOADING' });
+    this.store.dispatch(new UI.StartLoading());
     console.log('transferring Unit to ' + location);
 
     const newActivity: UnitActivity = {
@@ -159,11 +160,11 @@ export class UnitService {
       .subscribe(
         data => {
           console.log('complete Xfr Unit ', data);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
         },
         error => {
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
           this.uiService.showSnackbar(error, null, 3000);
         }
       );

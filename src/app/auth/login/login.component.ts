@@ -3,7 +3,7 @@ import { AuthService } from '../auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../user.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../../app.reducer';
+import * as fromRoot from '../../app.reducer';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AuthData } from '../auth-data.model';
@@ -23,14 +23,14 @@ export class LoginComponent implements OnInit {
   constructor (
     private authService: AuthService,
     private loggingService: LoggingService,
-    private store: Store<{ ui: fromApp.State }>
+    private store: Store<fromRoot.State>
   ) { }
 
   ngOnInit() {
     this.store.subscribe(data => {
       return this.loggingService.showStateLoadingInConsole() ? console.log('login: ', data) : null;
     });
-    this.isLoading$ = this.store.pipe(map(state => state.ui.isLoading));
+    this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.loginForm = new FormGroup({
       username: new FormControl('', { validators: [Validators.required] }),
       password: new FormControl('', { validators: [Validators.required] })

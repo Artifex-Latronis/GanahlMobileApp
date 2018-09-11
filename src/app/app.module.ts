@@ -13,7 +13,7 @@ import { UnitActivityService } from './dist-yard-work/unit-activity.service';
 import { AuthService } from './auth/auth.service';
 import { UiService } from './shared/ui.service';
 import { StoreModule } from '@ngrx/store';
-import { appReducer } from './app.reducer';
+import { reducers } from './app.reducer';
 import { AppRoutingModule } from './/app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
@@ -30,7 +30,7 @@ import { httpInterceptorProviders } from './http-interceptors';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    StoreModule.forRoot({ ui: appReducer }),
+    StoreModule.forRoot(reducers),
     SharedModule,
     AppRoutingModule,
     AuthModule,

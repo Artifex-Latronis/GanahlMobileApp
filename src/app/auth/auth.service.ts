@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../app.reducer';
+import * as fromRoot from '../app.reducer';
+import * as UI from '../shared/ui.actions';
 import { User } from './user.model';
 import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
@@ -19,7 +20,7 @@ export class AuthService {
 
   constructor (
     private router: Router,
-    private store: Store<{ ui: fromApp.State }>,
+    private store: Store<fromRoot.State>,
     private httpClient: HttpClient,
     private uiService: UiService,
     private loggingService: LoggingService
@@ -28,7 +29,7 @@ export class AuthService {
 
 
   login(authData: AuthData) {
-    this.store.dispatch({ type: 'START_LOADING' });
+    this.store.dispatch(new UI.StartLoading());
 
     this.getUser(authData)
       .subscribe(
@@ -39,11 +40,11 @@ export class AuthService {
           }
           this.authChange.next(true);
           this.router.navigate(['/yard']);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
-          this.store.dispatch({ type: 'STOP_LOADING' });
+          this.store.dispatch(new UI.StopLoading());
         }
       );
 
