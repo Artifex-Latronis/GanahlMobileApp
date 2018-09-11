@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
 import { UnitService } from '../unit.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
 import * as fromRoot from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -14,10 +14,12 @@ import { LoggingService } from '../../shared/logging.service';
   templateUrl: './unit-move.component.html',
   styleUrls: ['./unit-move.component.css']
 })
-export class UnitMoveComponent implements OnInit {
+export class UnitMoveComponent implements OnInit, OnDestroy {
 
   moveUnitForm: FormGroup;
   isLoading$: Observable<boolean>;
+  private loggingSubscription: Subscription;
+  private secondLoggingSubscription: Subscription;
 
   @Output() movingUnitEnd = new EventEmitter<void>();
   @Output() scanningUnitEnd = new EventEmitter<void>();
@@ -30,9 +32,17 @@ export class UnitMoveComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.store.subscribe(data => {
-      return this.loggingService.showStateLoadingInConsole() ? console.log('unit-move: ', data) : null;
-    });
+    // some testing for subscriptions below...
+    // this.loggingSubscription = this.store.subscribe(data => {
+    //   const myNumbers = interval(1000);
+    //   this.secondLoggingSubscription = myNumbers.subscribe(
+    //     (number: number) => {
+    //       console.log(number);
+    //     }
+    //   );
+    //   return this.loggingService.showStateLoadingInConsole() ? console.log('unit-move: ', data) : null;
+    // });
+
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
     this.moveUnitForm = new FormGroup({
       binID: new FormControl('', { validators: [Validators.required] })
@@ -59,4 +69,8 @@ export class UnitMoveComponent implements OnInit {
     this.unitService.cancelMovingUnit();
   }
 
+  ngOnDestroy() {
+    // this.loggingSubscription.unsubscribe();
+    // this.secondLoggingSubscription.unsubscribe();
+  }
 }

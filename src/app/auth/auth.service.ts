@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../app.reducer';
 import * as UI from '../shared/ui.actions';
+import * as Auth from './auth.actions';
 import { User } from './user.model';
 import { AuthData } from './auth-data.model';
 import { Subject } from 'rxjs';
@@ -38,9 +39,11 @@ export class AuthService {
           if (this.loggingService.showHttpResponseObjectsInConsole()) {
             console.log(this.user);
           }
-          this.authChange.next(true);
-          this.router.navigate(['/yard']);
+          // this.authChange.next(true);
+
+          this.store.dispatch(new Auth.SetAuthenticated());
           this.store.dispatch(new UI.StopLoading());
+          this.router.navigate(['/yard']);
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
@@ -58,9 +61,9 @@ export class AuthService {
     return this.httpClient.post<User>('https://myaccount.ganahl.com/api/dev/l/request/login', user);
   }
 
-  isAuth() {
-    return this.user != null;
-  }
+  // isAuth() {
+  //   return this.user != null;
+  // }
 
   getToken() {
     return this.user ? this.user.jwt : null;
