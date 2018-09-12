@@ -17,6 +17,7 @@ export class UnitScanComponent implements OnInit {
   unitScanForm: FormGroup;
   unit: Unit;
   isLoading$: Observable<boolean>;
+  isDisplayingUnit$: Observable<boolean>;
 
   constructor (
     private unitService: UnitService,
@@ -29,6 +30,8 @@ export class UnitScanComponent implements OnInit {
       return this.loggingService.showStateLoadingInConsole() ? console.log('unit-scan: ', data) : null;
     });
     this.isLoading$ = this.store.select(fromRoot.getIsLoading);
+    this.isDisplayingUnit$ = this.store.select(fromRoot.getIsDisplayingUnit);
+    // console.log(this.isDisplayingUnit$);
     this.unitScanForm = new FormGroup({
       unitID: new FormControl('', { validators: [Validators.required] })
     });

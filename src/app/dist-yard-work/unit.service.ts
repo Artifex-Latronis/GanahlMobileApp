@@ -49,6 +49,7 @@ export class UnitService {
           this.selectedUnit = this.unit;
           this.unitSelected.next({ ... this.selectedUnit });
           this.store.dispatch(new UI.StopLoading());
+          this.store.dispatch(new UI.StartDisplayingUnit());
         },
         error => {
           this.uiService.showSnackbar(error, null, 3000);
@@ -60,6 +61,7 @@ export class UnitService {
   stopScanUnit() {
     this.selectedUnit = null;
     this.unitSelected.next(null);
+    this.store.dispatch(new UI.StopDisplayingUnit());
   }
 
   // routines for pulling

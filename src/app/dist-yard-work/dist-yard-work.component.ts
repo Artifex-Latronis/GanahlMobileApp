@@ -38,6 +38,7 @@ export class DistYardWorkComponent implements OnInit, OnDestroy {
       started => {
         if (started) {
           this.onPullingUnit = true;
+
         } else {
           this.onPullingUnit = false;
         }

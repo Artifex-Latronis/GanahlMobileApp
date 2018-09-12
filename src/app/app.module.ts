@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { HeaderComponent } from './navigation/header/header.component';
 import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
 import { UnitService } from './dist-yard-work/unit.service';
 import { UnitActivityService } from './dist-yard-work/unit-activity.service';

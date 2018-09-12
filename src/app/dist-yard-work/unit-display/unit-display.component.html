@@ -1,4 +1,4 @@
-<section class="unit-card">
+<section *ngIf="isDisplayingUnit$ | async" class="unit-card">
   <mat-card>
     <mat-card-title fxLayout="row" fxLayoutAlign="space-between">
       <div class="card-title">Unit#: {{ unit.ID }}</div>

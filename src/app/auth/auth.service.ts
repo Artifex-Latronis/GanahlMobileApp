@@ -27,8 +27,6 @@ export class AuthService {
     private loggingService: LoggingService
   ) { }
 
-
-
   login(authData: AuthData) {
     this.store.dispatch(new UI.StartLoading());
 
@@ -39,7 +37,6 @@ export class AuthService {
           if (this.loggingService.showHttpResponseObjectsInConsole()) {
             console.log(this.user);
           }
-          // this.authChange.next(true);
 
           this.store.dispatch(new Auth.SetAuthenticated());
           this.store.dispatch(new UI.StopLoading());
@@ -60,10 +57,6 @@ export class AuthService {
   getUser(user) {
     return this.httpClient.post<User>('https://myaccount.ganahl.com/api/dev/l/request/login', user);
   }
-
-  // isAuth() {
-  //   return this.user != null;
-  // }
 
   getToken() {
     return this.user ? this.user.jwt : null;
