@@ -38,7 +38,8 @@ export class AuthService {
             console.log(this.user);
           }
 
-          this.store.dispatch(new Auth.SetAuthenticated());
+          // this.store.dispatch(new Auth.SetAuthenticated());
+          this.authChange.next(true);
           this.store.dispatch(new UI.StopLoading());
           this.router.navigate(['/yard']);
         },
@@ -60,6 +61,10 @@ export class AuthService {
 
   getToken() {
     return this.user ? this.user.jwt : null;
+  }
+
+  isAuth() {
+    return this.user != null;
   }
 
   logout() {

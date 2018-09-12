@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
 import { User } from '../../auth/user.model';
 import { Store } from '@ngrx/store';
@@ -10,9 +10,10 @@ import { AuthService } from '../../auth/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   @Output() sidenavToggle = new EventEmitter<void>();
-  isAuth$: Observable<boolean>;
+  // isAuth$: Observable<boolean>;
+  isAuth: boolean;
   authSubscription: Subscription;
   user: User;
 
@@ -22,20 +23,19 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.authSubscription = this.authService.authChange.subscribe(authStatus => {
-    //   this.isAuth = authStatus;
-    //   this.user = this.authService.getCurrentUser();
-    // });
+    this.authSubscription = this.authService.authChange.subscribe(authStatus => {
+      this.isAuth = authStatus;
+      this.user = this.authService.getCurrentUser();
+    });
 
-    this.isAuth$ = this.store.select(fromRoot.getIsAuth);
-    this.user = this.authService.getCurrentUser();
+    // this.isAuth$ = this.store.select(fromRoot.getIsAuth);
   }
 
   onToggleSidenav() {
     this.sidenavToggle.emit();
   }
 
-  // ngOnDestroy() {
-  //   this.authSubscription.unsubscribe();
-  // }
+  ngOnDestroy() {
+    this.authSubscription.unsubscribe();
+  }
 }

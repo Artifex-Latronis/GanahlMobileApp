@@ -2,7 +2,7 @@
   <div>
     <a routerLink="/"></a>
   </div>
-  <div *ngIf="isAuth$ | async">
+  <div *ngIf="isAuth">
     <button mat-icon-button (click)="onToggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
@@ -10,7 +10,7 @@
   <div>
     <a>Ganahl Lumber</a>
   </div>
-  <div *ngIf="isAuth$ | async" fxFlex fxLayout fxLayoutAlign="flex-end">
+  <div *ngIf="isAuth" fxFlex fxLayout fxLayoutAlign="flex-end">
     <a>{{ user.empName }}</a>
   </div>
 </mat-toolbar>
