@@ -22,13 +22,16 @@ export class LoggingInterceptor implements HttpInterceptor {
       .pipe(
         tap(
           // Succeeds when there is a response; ignore other events
-          event => {
-            status = event instanceof HttpResponse ? 'succeeded' : '';
+          response => {
+            status = response instanceof HttpResponse ? 'succeeded' : '';
+            if (this.loggingService.showHttpResponsesInConsole()) {
+              return status ? console.log(`Logging Intercepted Original Response: `, response) : '';
+            }
           },
           // Operation failed; error is an HttpErrorResponse
           error => {
             status = 'failed';
-            console.log('tap error', error);
+            console.log(`Logging Intercepted Orginal Error: `, error);
             if (!(error.error instanceof ErrorEvent)) {
               switch (error.status) {
                 // fatal error, require user to re-authenticate
@@ -77,14 +80,12 @@ export class LoggingInterceptor implements HttpInterceptor {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
 
-
       switch (error.status) {
         case 401:
           return throwError(`Expired Token, please log in again`);
         case 403:
           return throwError(`Invalid Token, please log in again`);
         case 404:
-
           return throwError(`Not on File, please check your input and try again.`);
         default:
           return throwError(`Uncaught Error Code: ${error.status} please notify IT`);

@@ -16,11 +16,15 @@ export class LoggingService {
   }
 
   showClonedHttpRequestsInConsole() {
-    // return true;
+    return true;
   }
 
   showHttpRequestStatusInConsole() {
-    // return true;
+    return true;
+  }
+
+  showHttpResponsesInConsole() {
+    return true;
   }
 
   showHttpResponseObjectsInConsole() {

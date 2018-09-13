@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Unit } from './unit.model';
 import * as fromRoot from '../app.reducers';
@@ -25,7 +25,7 @@ export class UnitService {
   private movingUnit = false;
 
   unit: Unit;
-  // unitActivity: UnitActivity;
+  unitActivity: UnitActivity;
 
   constructor (
     private uiService: UiService,
@@ -72,8 +72,6 @@ export class UnitService {
 
   completePullingUnit(orderID) {
     this.store.dispatch(new UI.StartLoading());
-    console.log('starting pull for order: ' + orderID);
-
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'pull',
@@ -81,16 +79,28 @@ export class UnitService {
       docID: orderID
     };
 
+    // this.unitActivityService.putUnitActivity(newActivity)
+    //   .subscribe(
+    //     (response) => {
+    //       this.store.dispatch(new UI.StopLoading());
+    //       console.log('this response', response);
+    //       this.stopAllUnitActions();
+    //     },
+    //     error => {
+    //       this.store.dispatch(new UI.StopLoading());
+    //       this.uiService.showSnackbar(error, null, 3000);
+    //     }
+    //   );
+
     this.unitActivityService.putUnitActivity(newActivity)
       .subscribe(
-        data => {
-          console.log('complete Pull Unit', data);
-          this.store.dispatch(new UI.StopLoading());
-          this.stopAllUnitActions();
-        },
         error => {
           this.store.dispatch(new UI.StopLoading());
           this.uiService.showSnackbar(error, null, 3000);
+        },
+        () => {
+          this.store.dispatch(new UI.StopLoading());
+          this.stopAllUnitActions();
         }
       );
 

@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.loggingService.showOriginalHttpRequestsInConsole()) {
-      console.log(`Auth Intercepted Original: `, request);
+      console.log(`Auth Intercepted Original Request: `, request);
     }
 
     const copiedRequest = request.clone({
@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
     });
 
     if (this.loggingService.showClonedHttpRequestsInConsole()) {
-      console.log(`Auth Intercepted Clone: `, copiedRequest);
+      console.log(`Auth Intercepted Cloned Request: `, copiedRequest);
     }
 
     return next.handle(copiedRequest);
