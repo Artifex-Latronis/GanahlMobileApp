@@ -18,13 +18,15 @@ import { AppRoutingModule } from './/app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { DistYardWorkModule } from './dist-yard-work/dist-yard-work.module';
 import { httpInterceptorProviders } from './http-interceptors';
+import { NotifyDialogComponent } from './shared/notify-dialog/notify-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidenavListComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    NotifyDialogComponent
   ],
   imports: [
     BrowserModule,

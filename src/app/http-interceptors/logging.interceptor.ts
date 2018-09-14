@@ -44,14 +44,28 @@ export class LoggingInterceptor implements HttpInterceptor {
                 case 403:
                   this.authService.logout();
                   break;
-                // Record not found, user is notified, program waits for new input
+                // record not found, user is notified, program waits for new input
                 case 404:
                   break;
+                // conflict error, user is givin the option to override or bail
+                case 409:
+                  break;
+                /*
+                * resource state has changed beyond what a user can fix,
+                * user is notified and redirected
+                */
+                case 412:
+                  break;
+                // internal server error (not defined), user is notified and redirected
                 case 500:
                   this.authService.logout();
                   break;
+                // internal server error(can't open files), user is notified and redirected
+                case 503:
+                  this.authService.logout();
+                  break;
+                // unexpected error codes, log user out to be safe.
                 default:
-                  // unexpected error codes, log user out to be safe.
                   console.error(
                     `Backend returned code ${error.status}, ` +
                     `body was: ${JSON.stringify(error.error)}`
@@ -59,6 +73,8 @@ export class LoggingInterceptor implements HttpInterceptor {
                   this.authService.logout();
                   break;
               }
+            } else {
+
             }
           }
         ),

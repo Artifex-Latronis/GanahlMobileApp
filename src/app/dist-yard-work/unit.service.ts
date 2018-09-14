@@ -10,6 +10,9 @@ import { UnitActivityService } from './unit-activity.service';
 import { UnitActivity } from './unit-activity.model';
 import { AuthService } from '../auth/auth.service';
 import { LoggingService } from '../shared/logging.service';
+import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
+import { NotifyDialogComponent } from '../shared/notify-dialog/notify-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +26,11 @@ export class UnitService {
   private selectedUnit: Unit;
   private pullingUnit = false;
   private movingUnit = false;
+  private dialog: MatDialog;
 
-  unit: Unit;
-  unitActivity: UnitActivity;
+  private unit: Unit;
+  // private unitActivity: UnitActivity;
+  // private newUnitActivity;
 
   constructor (
     private uiService: UiService,
@@ -77,21 +82,8 @@ export class UnitService {
       type: 'pull',
       empID: this.authService.getCurrentUser().empID,
       docID: orderID,
-      override: 'no'
+      override: 'n'
     };
-
-    // this.unitActivityService.putUnitActivity(newActivity)
-    //   .subscribe(
-    //     (response) => {
-    //       this.store.dispatch(new UI.StopLoading());
-    //       console.log('this response', response);
-    //       this.stopAllUnitActions();
-    //     },
-    //     error => {
-    //       this.store.dispatch(new UI.StopLoading());
-    //       this.uiService.showSnackbar(error, null, 3000);
-    //     }
-    //   );
 
     this.unitActivityService.putUnitActivity(newActivity)
       .subscribe(
@@ -105,20 +97,116 @@ export class UnitService {
           console.log('in the unit.service completePullingUnit error branch');
           console.log(error);
           switch (error.status) {
+            // docID is not found, have user check his input and resubmit
             case 404:
               this.store.dispatch(new UI.StopLoading());
               this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
               break;
+            /*
+            * the unitID has a status that conflicts with the action taken,
+            * allow user to override this status and submit a new modified
+            * activity model
+            */
             case 409:
-
+              const dialogRef409 = this.dialog.open(ConfirmDialogComponent, {
+                data: {
+                  message: error.error.message
+                }
+              });
+              dialogRef409.afterClosed().subscribe(result => {
+                if (result) {
+                  const overrideNewActivity: UnitActivity = {
+                    ...newActivity,
+                    override: 'y'
+                  };
+                  this.store.dispatch(new UI.StopLoading());
+                  this.completePullingUnitWithOverride(overrideNewActivity);
+                }
+                this.store.dispatch(new UI.StopLoading());
+              });
               break;
+            /*
+            * the unitID has been deleted/never created on the server,
+            * the user is notified and redirected to scan a new unit
+            */
             case 412:
+              const dialogRef412 = this.dialog.open(NotifyDialogComponent, {
+                data: {
+                  message: error.error.message
+                }
+              });
+              dialogRef412.afterClosed().subscribe(result => {
+                if (result) {
+                  this.stopAllUnitActions();
+                } else {
+                  this.authService.logout();
+                }
+              }
+              );
+              this.store.dispatch(new UI.StopLoading());
+              break;
+            // other status was sent, user is either globally redirected, or can stay here
+            default:
+              this.store.dispatch(new UI.StopLoading());
+              this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
               break;
           }
 
         }
       );
 
+  }
+
+  completePullingUnitWithOverride(overrideNewActivity) {
+    this.store.dispatch(new UI.StartLoading());
+    this.unitActivityService.putUnitActivity(overrideNewActivity)
+      .subscribe(
+        (success) => {
+          console.log('in the unit.service completePullingUnitWithOverride success branch');
+          console.log(success);
+          this.store.dispatch(new UI.StopLoading());
+          this.stopAllUnitActions();
+        },
+        error => {
+          console.log('in the unit.service completePullingUnitWithOverride error branch');
+          console.log(error);
+          switch (error.status) {
+            /*
+            * docID is not found, have user check his input and resubmit,
+            * this new submit request will lose the 'override = y'
+            */
+            case 404:
+              this.store.dispatch(new UI.StopLoading());
+              this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
+              break;
+            /*
+            * the unitID has been deleted/never created on the server,
+            * the user is notified and redirected to scan a new unit
+            */
+            case 412:
+              const dialogRef412 = this.dialog.open(NotifyDialogComponent, {
+                data: {
+                  message: error.error.message
+                }
+              });
+              dialogRef412.afterClosed().subscribe(result => {
+                if (result) {
+                  this.stopAllUnitActions();
+                } else {
+                  this.authService.logout();
+                }
+              }
+              );
+              this.store.dispatch(new UI.StopLoading());
+              break;
+            // other status was sent, user is either globally redirected, or can stay here
+            default:
+              this.store.dispatch(new UI.StopLoading());
+              this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
+              break;
+          }
+        }
+      );
   }
 
   cancelPullingUnit() {
@@ -145,7 +233,7 @@ export class UnitService {
       type: 'move',
       empID: this.authService.getCurrentUser().empID,
       binID: binID,
-      override: 'no'
+      override: 'n'
     };
 
     this.unitActivityService.putUnitActivity(newActivity)
@@ -182,7 +270,7 @@ export class UnitService {
       type: 'xfr',
       empID: this.authService.getCurrentUser().empID,
       docID: location,
-      override: 'no'
+      override: 'n'
     };
 
     this.unitActivityService.putUnitActivity(newActivity)
