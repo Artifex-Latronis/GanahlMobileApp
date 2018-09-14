@@ -44,7 +44,8 @@ export class AuthService {
           this.router.navigate(['/yard']);
         },
         error => {
-          this.uiService.showSnackbar(error, null, 3000);
+          console.log('in the auth.service login error branch');
+          this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
           this.store.dispatch(new UI.StopLoading());
         }
       );

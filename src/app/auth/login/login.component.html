@@ -4,9 +4,9 @@
   <form class="login-form" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" [formGroup]="loginForm"
     (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <input type="text" matInput placeholder="Employee Number" formControlName="username">
-      <button mat-button type="button" *ngIf="this.loginForm.get('username').value" matSuffix mat-icon-button
-        aria-label="Clear" (click)="this.loginForm.get('username').setValue('')">
+      <input type="text" matInput placeholder="Employee Number" formControlName="userID">
+      <button mat-button type="button" *ngIf="this.loginForm.get('userID').value" matSuffix mat-icon-button aria-label="Clear"
+        (click)="this.loginForm.get('userID').setValue('')">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error>Missing Employee Number</mat-error>

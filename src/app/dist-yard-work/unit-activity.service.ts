@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UnitActivity } from './unit-activity.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class UnitActivityService {
 
   constructor (private httpClient: HttpClient) { }
 
-  putUnitActivity(unitActivity: UnitActivity): Observable<UnitActivity> {
+  putUnitActivity(unitActivity) {
     return this.httpClient.put<UnitActivity>('https://myaccount.ganahl.com/api/dev/request/unitActivity/', unitActivity);
   }
 }

@@ -52,7 +52,7 @@ export class UnitService {
           this.store.dispatch(new UI.StartDisplayingUnit());
         },
         error => {
-          this.uiService.showSnackbar(error, null, 3000);
+          this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
           this.store.dispatch(new UI.StopLoading());
         }
       );
@@ -75,8 +75,9 @@ export class UnitService {
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'pull',
-      empID: this.authService.getCurrentUser().userName,
-      docID: orderID
+      empID: this.authService.getCurrentUser().empID,
+      docID: orderID,
+      override: 'no'
     };
 
     // this.unitActivityService.putUnitActivity(newActivity)
@@ -94,13 +95,27 @@ export class UnitService {
 
     this.unitActivityService.putUnitActivity(newActivity)
       .subscribe(
-        error => {
-          this.store.dispatch(new UI.StopLoading());
-          this.uiService.showSnackbar(error, null, 3000);
-        },
-        () => {
+        (success) => {
+          console.log('in the unit.service completePullingUnit success branch');
+          console.log(success);
           this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
+        },
+        error => {
+          console.log('in the unit.service completePullingUnit error branch');
+          console.log(error);
+          switch (error.status) {
+            case 404:
+              this.store.dispatch(new UI.StopLoading());
+              this.uiService.showSnackbar(error.error.statusmsg, null, 3000);
+              break;
+            case 409:
+
+              break;
+            case 412:
+              break;
+          }
+
         }
       );
 
@@ -128,14 +143,15 @@ export class UnitService {
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'move',
-      empID: this.authService.getCurrentUser().userName,
-      binID: binID
+      empID: this.authService.getCurrentUser().empID,
+      binID: binID,
+      override: 'no'
     };
 
     this.unitActivityService.putUnitActivity(newActivity)
       .subscribe(
         data => {
-          console.log('Completed Move Unit ', data);
+          console.log('completed move unit: ', data);
           this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
         },
@@ -159,19 +175,20 @@ export class UnitService {
   // routines for transferring
   transferUnit(location) {
     this.store.dispatch(new UI.StartLoading());
-    console.log('transferring Unit to ' + location);
+    console.log('transferring Unit to: ' + location);
 
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'xfr',
-      empID: this.authService.getCurrentUser().userName,
-      docID: location
+      empID: this.authService.getCurrentUser().empID,
+      docID: location,
+      override: 'no'
     };
 
     this.unitActivityService.putUnitActivity(newActivity)
       .subscribe(
         data => {
-          console.log('complete Xfr Unit ', data);
+          console.log('completed xfr unit: ', data);
           this.store.dispatch(new UI.StopLoading());
           this.stopAllUnitActions();
         },

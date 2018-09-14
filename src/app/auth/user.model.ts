@@ -1,5 +1,5 @@
 export interface User {
-  empName: string;
+  empID: string;
+  username: string;
   jwt: string;
-  userName: string;
 }

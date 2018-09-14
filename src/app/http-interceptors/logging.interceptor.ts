@@ -1,5 +1,5 @@
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, concat, of } from 'rxjs';
 import { tap, finalize, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
@@ -25,7 +25,9 @@ export class LoggingInterceptor implements HttpInterceptor {
           response => {
             status = response instanceof HttpResponse ? 'succeeded' : '';
             if (this.loggingService.showHttpResponsesInConsole()) {
-              return status ? console.log(`Logging Intercepted Original Response: `, response) : '';
+              return status ? (
+                console.log(`Logging Intercepted Original Response: `, response)
+              ) : '';
             }
           },
           // Operation failed; error is an HttpErrorResponse
@@ -45,6 +47,9 @@ export class LoggingInterceptor implements HttpInterceptor {
                 // Record not found, user is notified, program waits for new input
                 case 404:
                   break;
+                case 500:
+                  this.authService.logout();
+                  break;
                 default:
                   // unexpected error codes, log user out to be safe.
                   console.error(
@@ -57,8 +62,9 @@ export class LoggingInterceptor implements HttpInterceptor {
             }
           }
         ),
+
         // pass user-friendly error message to snackbar
-        catchError(this.httpErrorHandler),
+        // catchError(this.httpErrorHandler),
         // Log when response observable either completes or errors
         finalize(() => {
           const elapsed = Date.now() - started;
@@ -71,28 +77,33 @@ export class LoggingInterceptor implements HttpInterceptor {
 
   }
 
-  private httpErrorHandler(error: HttpErrorResponse) {
+  // deprecated for now, unless i can figure out how to use both?
+  // private httpErrorHandler(error: HttpErrorResponse) {
 
-    if (error.error instanceof ErrorEvent) {
-      // a client-side or network error occured. Handle accordingly.
-      console.error('An error occured:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
+  //   console.log('in the logging.interceptor httpErrorHandler branch:');
+  //   console.log(error);
 
-      switch (error.status) {
-        case 401:
-          return throwError(`Expired Token, please log in again`);
-        case 403:
-          return throwError(`Invalid Token, please log in again`);
-        case 404:
-          return throwError(`Not on File, please check your input and try again.`);
-        default:
-          return throwError(`Uncaught Error Code: ${error.status} please notify IT`);
-      }
-    }
+  //   if (error.error instanceof ErrorEvent) {
+  //     // a client-side or network error occured. Handle accordingly.
+  //     console.error('An error occured:', error.error.message);
+  //   } else {
+  //     // The backend returned an unsuccessful response code.
+  //     // The response body may contain clues as to what went wrong.
+  //     switch (error.status) {
+  //       case 401:
+  //         return throwError(`Expired Token, please log in again`);
+  //       case 403:
+  //         return throwError(`Invalid Token, please log in again`);
+  //       case 404:
+  //         return throwError(`Not on File, please check your input and try again.`);
+  //       case 500:
+  //         return throwError(`Critical Error, please log in again`);
+  //       default:
+  //         return throwError(`Uncaught Error Code: ${error.status} please notify IT`);
+  //     }
+  //   }
 
-    return throwError(`Something bad happened; please try again later.`);
-  }
+  //   return throwError(`Something bad happened; please try again later.`);
+  // }
 
 }

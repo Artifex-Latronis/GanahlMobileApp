@@ -4,4 +4,5 @@ export interface UnitActivity {
   empID: string;
   binID?: string;
   docID?: string;
+  override: 'yes' | 'no';
 }
