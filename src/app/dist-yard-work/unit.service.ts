@@ -26,7 +26,6 @@ export class UnitService {
   private selectedUnit: Unit;
   private pullingUnit = false;
   private movingUnit = false;
-  private dialog: MatDialog;
 
   private unit: Unit;
   // private unitActivity: UnitActivity;
@@ -38,7 +37,8 @@ export class UnitService {
     private unitActivityService: UnitActivityService,
     private store: Store<fromRoot.State>,
     private authService: AuthService,
-    private loggingService: LoggingService
+    private loggingService: LoggingService,
+    private dialog: MatDialog
   ) { }
 
   // routines for scanning
@@ -132,13 +132,14 @@ export class UnitService {
             case 412:
               const dialogRef412 = this.dialog.open(NotifyDialogComponent, {
                 data: {
-                  message: error.error.message
+                  message: error.error.statusmsg
                 }
               });
               dialogRef412.afterClosed().subscribe(result => {
                 if (result) {
                   this.stopAllUnitActions();
                 } else {
+                  // this can happend, if they click outside the box. can i prevent???
                   this.authService.logout();
                 }
               }
@@ -193,6 +194,7 @@ export class UnitService {
                 if (result) {
                   this.stopAllUnitActions();
                 } else {
+                  // can this happen? check later
                   this.authService.logout();
                 }
               }

@@ -46,6 +46,6 @@ import { NotifyDialogComponent } from './shared/notify-dialog/notify-dialog.comp
     httpInterceptorProviders
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent]
+  entryComponents: [ConfirmDialogComponent, NotifyDialogComponent]
 })
 export class AppModule { }
