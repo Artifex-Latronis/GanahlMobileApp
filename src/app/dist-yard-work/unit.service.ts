@@ -138,9 +138,6 @@ export class UnitService {
               dialogRef412.afterClosed().subscribe(result => {
                 if (result) {
                   this.stopAllUnitActions();
-                } else {
-                  // this can happend, if they click outside the box. can i prevent???
-                  this.authService.logout();
                 }
               }
               );
@@ -193,9 +190,6 @@ export class UnitService {
               dialogRef412.afterClosed().subscribe(result => {
                 if (result) {
                   this.stopAllUnitActions();
-                } else {
-                  // can this happen? check later
-                  this.authService.logout();
                 }
               }
               );

@@ -5,3 +5,8 @@ h1 {
 p {
   font-size: 90%
 }
+
+button {
+  width: 45%;
+  height: 50px;
+}

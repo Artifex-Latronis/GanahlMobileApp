@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-notify-dialog',
@@ -8,7 +8,9 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class NotifyDialogComponent implements OnInit {
 
-  constructor (@Inject(MAT_DIALOG_DATA) public passedData: any) { }
+  constructor (@Inject(MAT_DIALOG_DATA) public passedData: any, private dialogRef: MatDialogRef<NotifyDialogComponent>) {
+    dialogRef.disableClose = true;
+  }
 
   ngOnInit() {
   }
