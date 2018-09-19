@@ -80,7 +80,7 @@ export class UnitService {
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'pull',
-      empID: this.authService.getCurrentUser().empID,
+      userID: this.authService.getCurrentUser().userID,
       docID: orderID,
       override: 'n'
     };
@@ -227,7 +227,7 @@ export class UnitService {
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'move',
-      empID: this.authService.getCurrentUser().empID,
+      userID: this.authService.getCurrentUser().userID,
       binID: binID,
       override: 'n'
     };
@@ -264,7 +264,7 @@ export class UnitService {
     const newActivity: UnitActivity = {
       unitID: this.getSelectedUnit().ID,
       type: 'xfr',
-      empID: this.authService.getCurrentUser().empID,
+      userID: this.authService.getCurrentUser().userID,
       docID: location,
       override: 'n'
     };
