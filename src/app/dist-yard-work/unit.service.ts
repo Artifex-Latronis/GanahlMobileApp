@@ -13,6 +13,7 @@ import { LoggingService } from '../shared/logging.service';
 import { ConfirmDialogComponent } from '../shared/confirm-dialog/confirm-dialog.component';
 import { NotifyDialogComponent } from '../shared/notify-dialog/notify-dialog.component';
 import { MatDialog } from '@angular/material';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -297,7 +298,7 @@ export class UnitService {
   }
 
   getUnit(unitID) {
-    return this.httpClient.get<Unit>('https://myaccount.ganahl.com/api/dev/request/unit/' + unitID);
+    return this.httpClient.get<Unit>(environment.baseURL + 'unit/' + unitID + '/');
   }
 
 }

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UiService } from '../shared/ui.service';
 import { LoggingService } from '../shared/logging.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +58,7 @@ export class AuthService {
   }
 
   getUser(user) {
-    return this.httpClient.post<User>('https://myaccount.ganahl.com/api/dev/l/request/login', user);
+    return this.httpClient.post<User>(environment.baseAuthURL + 'login/', user);
   }
 
   getToken() {
